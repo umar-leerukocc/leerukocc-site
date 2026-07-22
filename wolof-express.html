@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wolof Express : Activez votre appli audio</title>
+<meta name="description" content="Activez l'appli audio Wolof Express avec le code inséré dans votre exemplaire du livre.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lato:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc"> <span style="color:var(--or);">Leeru</span><span style="color:#FFF;"> Kocc</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="cours.html">Cours de Wolof</a></li>
+      <li><a href="consultance.html">Consultance &amp; Traduction</a></li>
+      <li><a href="catalogue.html">Catalogue</a></li>
+      <li><a href="a-propos.html">À propos</a></li>
+      <li><a href="galerie.html">Galerie</a></li>
+      <li><a href="wolof-express.html" class="active">Wolof Express</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Guide de poche · Édition Leeru Kocc</div>
+    <h1>Votre livre parle.<br>Écoutez-le.</h1>
+    <p>Wolof Express est un guide de poche accompagné d'une appli audio exclusive : chaque phrase, chaque dialogue du livre, prononcé pour vous. Réservée aux acheteurs du livre.</p>
+    <div class="hero-actions">
+      <a href="#activer" class="btn btn-primary">J'ai mon code → Activer l'appli</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-label">Comment ça marche</div>
+    <h2 class="section-title">Trois étapes, une fois pour toutes</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Trouvez votre code</strong><span>Sur la carte insérée dans votre exemplaire du livre.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Activez-le ici</strong><span>Entrez votre code et votre e-mail dans le formulaire ci-dessous.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Écoutez le livre</strong><span>Un lien d'accès à l'appli audio vous est envoyé, valable définitivement pour cet exemplaire.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="activer" style="background:#FFF8EE;">
+  <div class="wrap">
+    <div class="section-label">Activation</div>
+    <h2 class="section-title">Débloquez votre appli audio</h2>
+    <p class="section-intro">Le code se trouve sur la carte insérée dans votre livre. Il ne fonctionne qu'une seule fois.</p>
+
+    <div class="form-card">
+      <form id="activationForm">
+        <div class="field">
+          <label for="code">Code d'accès</label>
+          <input type="text" id="code" name="code" placeholder="WEX-XXXX-XXXX" required autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="email">Votre e-mail</label>
+          <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+        </div>
+        <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" id="activateBtn">Activer l'appli</button>
+        <div class="form-msg" id="activationMsg"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand" style="display:flex;align-items:center;gap:0.6rem;"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc" style="height:36px;"> Leeru Kocc</div>
+        <p class="footer-tagline">Cabinet de promotion des langues et cultures sénégalaises. Livres, méthodes et outils numériques.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="cours.html">Cours de Wolof</a>
+        <a href="consultance.html">Consultance &amp; Traduction</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="galerie.html">Galerie</a>
+        <a href="a-propos.html">À propos</a>
+        <a href="wolof-express.html">Wolof Express</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>leerukocc@gmail.com</p>
+        <p>+221 77 153 21 98</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Éditions Leeru Kocc, Dakar, Sénégal</span>
+      <span>Tous droits réservés</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+<script>
+document.getElementById('activationForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const code = document.getElementById('code').value.trim().toUpperCase();
+  const email = document.getElementById('email').value.trim();
+  const msg = document.getElementById('activationMsg');
+  const btn = document.getElementById('activateBtn');
+
+  msg.className = 'form-msg show loading';
+  msg.textContent = 'Vérification en cours…';
+  btn.disabled = true;
+
+  try{
+    const res = await fetch('/.netlify/functions/verify-code', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code, email })
+    });
+    const data = await res.json();
+
+    if(res.ok && data.success){
+      msg.className = 'form-msg show success';
+      msg.innerHTML = 'Code validé ! <a href="' + data.appUrl + '" style="text-decoration:underline;">Cliquez ici pour ouvrir votre appli audio</a>.';
+    } else {
+      msg.className = 'form-msg show error';
+      msg.textContent = data.message || "Ce code n'est pas valide ou a déjà été utilisé.";
+    }
+  } catch(err){
+    msg.className = 'form-msg show error';
+    msg.textContent = "Erreur de connexion. Réessayez dans un instant.";
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
