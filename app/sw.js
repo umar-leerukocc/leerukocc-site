@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wolof-express-v1';
+const CACHE_NAME = 'wolof-express-v2';
 const ASSETS = [
   '/app/wolof-express-audio.html',
   '/app/manifest.json',
