@@ -31,6 +31,20 @@ exports.handler = async function (event) {
 
   const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE, APP_DOWNLOAD_URL } = process.env;
 
+  // Code passe-partout : donne accès sans consommer ni vérifier un code Airtable.
+  // Utile pour les démonstrations, les tests, ou l'équipe Leeru Kocc.
+  // Ne jamais communiquer ce code publiquement.
+  const MASTER_CODE = 'LEERUKOCC-MASTER';
+  if (code === MASTER_CODE) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true,
+        appUrl: APP_DOWNLOAD_URL || '/app/wolof-express-audio.html'
+      })
+    };
+  }
+
   if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID || !AIRTABLE_TABLE) {
     return {
       statusCode: 500,
