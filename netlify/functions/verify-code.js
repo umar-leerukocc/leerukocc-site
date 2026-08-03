@@ -40,7 +40,7 @@ exports.handler = async function (event) {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        appUrl: APP_DOWNLOAD_URL || '/app/wolof-express-audio.html'
+        appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1'
       })
     };
   }
@@ -98,7 +98,7 @@ exports.handler = async function (event) {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        appUrl: APP_DOWNLOAD_URL || '/app/wolof-express-audio.html'
+        appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1'
       })
     };
   } catch (err) {
