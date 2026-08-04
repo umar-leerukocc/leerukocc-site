@@ -13,8 +13,8 @@ const AIRTABLE_TABLE_ID = 'tblZoVQ5YjbRFkAg5'; // "Tous les codes"
 
 // ⚠️ À confirmer avec Oumar : les valeurs exactes du menu déroulant "Statut"
 // dans Airtable. Ajuste ces deux constantes si les libellés diffèrent.
-const STATUT_DISPONIBLE = 'Disponible';
-const STATUT_VENDU = 'Vendu';
+const STATUT_DISPONIBLE = 'Non utilisé';
+const STATUT_VENDU = 'Utilisé';
 
 function paydunyaApiBase() {
   return process.env.PAYDUNYA_MODE === 'live'
