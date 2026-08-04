@@ -79,6 +79,53 @@ async function assignCode(recordId, email) {
   return response.json();
 }
 
+// Envoie l'email contenant le code d'activation via Resend.
+// Ne fait rien (silencieusement) si RESEND_API_KEY n'est pas encore configuré.
+async function sendActivationEmail(toEmail, code) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('RESEND_API_KEY absent — email non envoyé (code déjà attribué en base).');
+    return;
+  }
+
+  const html = `
+    <div style="font-family:sans-serif; max-width:480px; margin:0 auto; color:#3A2A18;">
+      <h2 style="color:#5C411D;">Merci pour votre achat !</h2>
+      <p>Voici votre code d'activation Wolof Express :</p>
+      <p style="font-size:1.3em; font-weight:bold; letter-spacing:1px;
+        background:#f5f0e8; padding:14px 18px; border-radius:8px; color:#A0895D;
+        display:inline-block;">${code}</p>
+      <p>Pour activer votre appli, rendez-vous sur
+        <a href="https://leerukocc.com/wolof-express.html#activer" style="color:#A0895D;">leerukocc.com/wolof-express.html</a>
+        et entrez ce code avec votre e-mail.</p>
+      <p style="font-size:0.9em; color:#777; margin-top:2rem;">
+        Une question ? Écrivez-nous à
+        <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
+      </p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: toEmail,
+        subject: 'Votre code d\'activation Wolof Express',
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error('Erreur envoi email Resend:', await res.text());
+    }
+  } catch (err) {
+    console.error('Erreur envoi email Resend:', err);
+  }
+}
+
 exports.handler = async (event) => {
   const token = event.queryStringParameters && event.queryStringParameters.token;
 
@@ -122,6 +169,7 @@ exports.handler = async (event) => {
     }
 
     await assignCode(available.id, email);
+    await sendActivationEmail(email, available.fields.Code);
 
     return {
       statusCode: 200,

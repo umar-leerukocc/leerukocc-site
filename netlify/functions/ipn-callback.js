@@ -66,6 +66,70 @@ async function assignCode(recordId, email) {
   return response.json();
 }
 
+// Protection anti double-attribution : si un code a déjà été assigné à cet
+// email (par exemple via confirm-payment.js, qui s'exécute côté client et
+// est souvent plus rapide que l'IPN), on ne réattribue pas et on n'envoie
+// pas de deuxième email.
+async function findExistingAssignedCode(email) {
+  const formula = encodeURIComponent(
+    `AND({Statut} = "${STATUT_VENDU}", {Email acheteur} = "${email}")`
+  );
+  const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}?filterByFormula=${formula}&maxRecords=1`;
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}` },
+  });
+  const data = await response.json();
+  return data.records && data.records[0] ? data.records[0] : null;
+}
+
+// Envoie l'email contenant le code d'activation via Resend.
+// Ne fait rien (silencieusement) si RESEND_API_KEY n'est pas encore configuré,
+// pour ne jamais faire échouer l'attribution du code à cause de l'email.
+async function sendActivationEmail(toEmail, code) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('RESEND_API_KEY absent — email non envoyé (code déjà attribué en base).');
+    return;
+  }
+
+  const html = `
+    <div style="font-family:sans-serif; max-width:480px; margin:0 auto; color:#3A2A18;">
+      <h2 style="color:#5C411D;">Merci pour votre achat !</h2>
+      <p>Voici votre code d'activation Wolof Express :</p>
+      <p style="font-size:1.3em; font-weight:bold; letter-spacing:1px;
+        background:#f5f0e8; padding:14px 18px; border-radius:8px; color:#A0895D;
+        display:inline-block;">${code}</p>
+      <p>Pour activer votre appli, rendez-vous sur
+        <a href="https://leerukocc.com/wolof-express.html#activer" style="color:#A0895D;">leerukocc.com/wolof-express.html</a>
+        et entrez ce code avec votre e-mail.</p>
+      <p style="font-size:0.9em; color:#777; margin-top:2rem;">
+        Une question ? Écrivez-nous à
+        <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
+      </p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: toEmail,
+        subject: 'Votre code d\'activation Wolof Express',
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error('Erreur envoi email Resend:', await res.text());
+    }
+  } catch (err) {
+    console.error('Erreur envoi email Resend:', err);
+  }
+}
+
 // Extrait le token PayDunya du corps de la requête IPN, quel que soit le format
 // (PayDunya envoie généralement du form-urlencoded avec un champ "data" en JSON,
 // mais on gère aussi le JSON brut par sécurité).
@@ -121,7 +185,16 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: 'OK - email manquant' };
     }
 
-    // 2. Récupérer un code disponible dans Airtable
+    // 2. Vérifier qu'un code n'a pas déjà été attribué à cet acheteur
+    //    (cas fréquent : confirm-payment.js, côté client, est souvent plus
+    //    rapide que cette notification IPN qui peut arriver avec un délai).
+    const existing = await findExistingAssignedCode(buyerEmail);
+    if (existing) {
+      console.log(`Code déjà attribué à ${buyerEmail} (${existing.fields.Code}), IPN ignoré.`);
+      return { statusCode: 200, body: 'OK - déjà attribué' };
+    }
+
+    // 3. Récupérer un code disponible dans Airtable
     const codeRecord = await getAvailableCode();
     if (!codeRecord) {
       console.error('Plus aucun code disponible dans Airtable !');
@@ -129,27 +202,12 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: 'OK - stock de codes épuisé' };
     }
 
-    // 3. Marquer le code comme vendu et l'associer à l'acheteur
+    // 4. Marquer le code comme vendu et l'associer à l'acheteur
     await assignCode(codeRecord.id, buyerEmail);
-
     const activationCode = codeRecord.fields.Code;
 
-    // 4. TODO : envoyer l'email avec le code à buyerEmail (via Resend une fois configuré)
-    // Exemple prêt à l'emploi une fois RESEND_API_KEY disponible :
-    //
-    // await fetch('https://api.resend.com/emails', {
-    //   method: 'POST',
-    //   headers: {
-    //     Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     from: 'Leeru Kocc <noreply@leerukocc.com>',
-    //     to: buyerEmail,
-    //     subject: 'Ton code Wolof Express',
-    //     html: `<p>Merci pour ton achat ! Ton code d'activation : <strong>${activationCode}</strong></p>`,
-    //   }),
-    // });
+    // 5. Envoyer l'email avec le code (silencieux si RESEND_API_KEY absent)
+    await sendActivationEmail(buyerEmail, activationCode);
 
     console.log(`Code ${activationCode} attribué à ${buyerEmail}`);
     return { statusCode: 200, body: 'OK' };
