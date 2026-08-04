@@ -49,7 +49,8 @@
     <h1>Votre livre parle.<br>Écoutez-le.</h1>
     <p>Wolof Express est un guide de poche accompagné d'une appli audio exclusive : chaque phrase, chaque dialogue du livre, prononcé pour vous. Réservée aux acheteurs du livre.</p>
     <div class="hero-actions">
-      <a href="#activer" class="btn btn-primary">J'ai mon code → Activer l'appli</a>
+      <a href="#acheter" class="btn btn-primary">Acheter l'accès →</a>
+      <a href="#activer" class="btn btn-outline">J'ai déjà un code</a>
       <a href="app/wolof-express-audio.html" class="btn btn-outline">Essayer gratuitement →</a>
     </div>
   </div>
@@ -75,6 +76,43 @@
     </div>
   </div>
 </section>
+
+<section id="acheter">
+  <div class="wrap">
+    <div class="section-label">Achat en ligne</div>
+    <h2 class="section-title">Pas encore votre code ?</h2>
+    <p class="section-intro">Achetez votre accès directement en ligne, par carte bancaire ou mobile money. Votre code d'activation vous sera fourni immédiatement après le paiement.</p>
+
+    <div class="form-card">
+      <div class="field">
+        <label for="buyEmail">Votre e-mail</label>
+        <input type="email" id="buyEmail" name="buyEmail" placeholder="vous@exemple.com" required autocomplete="email">
+      </div>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
+        <button type="button" class="btn btn-terracotta" style="flex:1 1 220px;justify-content:center;" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')">Appli seule — 5 900 FCFA</button>
+        <button type="button" class="btn btn-outline" style="flex:1 1 220px;justify-content:center;" id="buyBookAppBtn" onclick="acheterWolofExpress('book_app')">Livre + Appli — 9 900 FCFA</button>
+      </div>
+      <div class="form-msg" id="buyMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Overlay affiché uniquement après un retour de paiement PayDunya réussi
+     (URL contenant ?paiement=confirme&token=...). Reste invisible sinon. -->
+<div id="confirmOverlay" style="
+  display:none;
+  position:fixed; inset:0;
+  background:rgba(31,20,10,0.65);
+  z-index:9999;
+  align-items:center; justify-content:center;
+  padding:1rem;
+">
+  <div class="form-card" style="max-width:440px; width:100%; text-align:center;">
+    <div id="confirmContent">
+      <p>Vérification de votre paiement en cours…</p>
+    </div>
+  </div>
+</div>
 
 <section id="activer" style="background:#FFF8EE;">
   <div class="wrap">
@@ -164,6 +202,98 @@ document.getElementById('activationForm').addEventListener('submit', async funct
     btn.disabled = false;
   }
 });
+
+// ---------------------------------------------------------------
+// Achat en ligne (PayDunya) — appelée par les boutons de la section #acheter
+// ---------------------------------------------------------------
+async function acheterWolofExpress(product){
+  const emailInput = document.getElementById('buyEmail');
+  const email = emailInput.value.trim();
+  const msg = document.getElementById('buyMsg');
+  const btnAppOnly = document.getElementById('buyAppOnlyBtn');
+  const btnBookApp = document.getElementById('buyBookAppBtn');
+
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg.className = 'form-msg show error';
+    msg.textContent = "Merci d'indiquer un e-mail valide avant de continuer.";
+    emailInput.focus();
+    return;
+  }
+
+  msg.className = 'form-msg show loading';
+  msg.textContent = 'Redirection vers le paiement…';
+  btnAppOnly.disabled = true;
+  btnBookApp.disabled = true;
+
+  try{
+    const res = await fetch('/.netlify/functions/create-invoice', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, product })
+    });
+    const data = await res.json();
+
+    if(res.ok && data.checkout_url){
+      window.location.href = data.checkout_url;
+      return; // on quitte la page, pas besoin de réactiver les boutons
+    } else {
+      msg.className = 'form-msg show error';
+      msg.textContent = data.error || "Une erreur est survenue. Réessayez.";
+    }
+  } catch(err){
+    msg.className = 'form-msg show error';
+    msg.textContent = "Erreur de connexion. Réessayez dans un instant.";
+  } finally {
+    btnAppOnly.disabled = false;
+    btnBookApp.disabled = false;
+  }
+}
+
+// ---------------------------------------------------------------
+// Retour de paiement PayDunya — se déclenche uniquement si l'URL
+// contient ?paiement=confirme&token=XXXX (redirection automatique
+// après un paiement réussi). Ne dépend pas de l'IPN PayDunya, qui
+// peut arriver avec un délai : cette vérification est immédiate.
+// ---------------------------------------------------------------
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('paiement') !== 'confirme') return;
+  const token = params.get('token');
+  if(!token) return;
+
+  const overlay = document.getElementById('confirmOverlay');
+  const content = document.getElementById('confirmContent');
+  overlay.style.display = 'flex';
+
+  fetch('/.netlify/functions/confirm-payment?token=' + encodeURIComponent(token))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data.assigned && data.code){
+        content.innerHTML =
+          '<h3 style="margin-top:0;">Merci pour votre achat !</h3>' +
+          '<p>Votre code d\'accès : <strong style="letter-spacing:1px;">' + data.code + '</strong></p>' +
+          '<p style="color:#666;font-size:0.9em;">Conservez ce code. Vous allez être redirigé vers votre appli…</p>';
+        setTimeout(function(){
+          window.location.href = 'app/wolof-express-audio.html?unlocked=1';
+        }, 3000);
+      } else if(data.status === 'completed'){
+        content.innerHTML =
+          '<h3 style="margin-top:0;">Paiement reçu</h3>' +
+          '<p>Nous finalisons l\'attribution de votre code. Si vous ne recevez rien sous peu, contactez-nous à ' +
+          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> avec votre e-mail d\'achat.</p>';
+      } else {
+        content.innerHTML =
+          '<h3 style="margin-top:0;">Statut du paiement : ' + (data.status || 'inconnu') + '</h3>' +
+          '<p>Si vous pensez qu\'il y a une erreur, contactez-nous à ' +
+          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a>.</p>';
+      }
+    })
+    .catch(function(){
+      content.innerHTML =
+        '<h3 style="margin-top:0;">Une erreur est survenue</h3>' +
+        '<p>Contactez-nous à <a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> avec votre e-mail d\'achat, nous vérifierons manuellement.</p>';
+    });
+})();
 </script>
 </body>
 </html>
