@@ -88,6 +88,12 @@
         <label for="buyEmail" data-i18n="wex_labelEmail">Votre e-mail</label>
         <input type="email" id="buyEmail" name="buyEmail" placeholder="vous@exemple.com" required autocomplete="email">
       </div>
+      <div class="field" style="margin-top:1.1rem;">
+        <label style="display:flex;align-items:flex-start;gap:0.55rem;font-weight:400;font-size:0.85rem;cursor:pointer;">
+          <input type="checkbox" id="acceptCgv" style="margin-top:0.2rem;flex-shrink:0;">
+          <span data-i18n="wex_acceptCgv">J'accepte les <a href="cgv.html" target="_blank" rel="noopener">Conditions Générales de Vente</a> et la <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>, et je reconnais que l'accès au produit numérique m'est fourni immédiatement après paiement.</span>
+        </label>
+      </div>
       <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
         <button type="button" class="btn btn-terracotta" style="flex:1 1 220px;justify-content:center;" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')" data-i18n="wex_btnAppOnly">Appli seule — 5 900 FCFA</button>
         <button type="button" class="btn btn-outline" style="flex:1 1 220px;justify-content:center;" id="buyBookAppBtn" onclick="acheterWolofExpress('book_app')" data-i18n="wex_btnBookApp">Livre + Appli — 9 900 FCFA</button>
@@ -160,6 +166,9 @@
         <p>+221 77 153 21 98</p>
       </div>
     </div>
+    <div class="footer-legal" style="text-align:center;padding:1rem 0;font-size:0.78rem;">
+      <a href="cgu.html">CGU</a> · <a href="cgv.html">CGV</a> · <a href="confidentialite.html">Politique de confidentialité</a>
+    </div>
     <div class="footer-bottom">
       <span>© 2026 Éditions Leeru Kocc, Dakar, Sénégal</span>
       <span data-i18n="footer_rights">Tous droits réservés</span>
@@ -219,11 +228,21 @@ async function acheterWolofExpress(product){
   const msg = document.getElementById('buyMsg');
   const btnAppOnly = document.getElementById('buyAppOnlyBtn');
   const btnBookApp = document.getElementById('buyBookAppBtn');
+  const cgvCheckbox = document.getElementById('acceptCgv');
 
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     msg.className = 'form-msg show error';
     msg.textContent = isEn() ? 'Please enter a valid email before continuing.' : "Merci d'indiquer un e-mail valide avant de continuer.";
     emailInput.focus();
+    return;
+  }
+
+  if(!cgvCheckbox.checked){
+    msg.className = 'form-msg show error';
+    msg.textContent = isEn()
+      ? 'Please accept the Terms of Sale and Privacy Policy before continuing.'
+      : "Merci d'accepter les CGV et la Politique de confidentialité avant de continuer.";
+    cgvCheckbox.focus();
     return;
   }
 
