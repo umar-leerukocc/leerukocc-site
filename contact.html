@@ -23,29 +23,29 @@
 <meta name="twitter:description" content="Contactez Leeru Kocc pour vos projets de formation, traduction ou consultance linguistique.">
 <meta name="twitter:image" content="https://leerukocc.com/assets/img/og-image-site.jpg">
 </head>
-<body>
+<body data-page="contact">
 
 <nav class="site-nav">
   <div class="wrap">
     <a href="index.html" class="brand"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc"> <span style="color:var(--or);">Leeru</span><span style="color:#FFF;"> Kocc</span></a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="cours.html">Cours de Wolof</a></li>
-      <li><a href="consultance.html">Consultance &amp; Traduction</a></li>
-      <li><a href="catalogue.html">Catalogue</a></li>
-      <li><a href="a-propos.html">À propos</a></li>
-      <li><a href="galerie.html">Galerie</a></li>
-      <li><a href="wolof-express.html">Wolof Express</a></li>
-      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="index.html" data-i18n="nav_accueil">Accueil</a></li>
+      <li><a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a></li>
+      <li><a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a></li>
+      <li><a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a></li>
+      <li><a href="a-propos.html" data-i18n="nav_apropos">À propos</a></li>
+      <li><a href="galerie.html" data-i18n="nav_galerie">Galerie</a></li>
+      <li><a href="wolof-express.html" data-i18n="nav_wolofExpress">Wolof Express</a></li>
+      <li><a href="contact.html" class="active" data-i18n="nav_contact">Contact</a></li>
     </ul>
   </div>
 </nav>
 
 <header class="page-hero">
   <div class="wrap">
-    <h1>Contact</h1>
-    <p>Une question, un projet, une commande en gros ? Écrivez-nous.</p>
+    <h1 data-i18n="cta_h1">Contact</h1>
+    <p data-i18n="cta_heroP">Une question, un projet, une commande en gros ? Écrivez-nous.</p>
   </div>
 </header>
 
@@ -53,41 +53,41 @@
   <div class="wrap">
     <div class="grid grid-2">
       <div>
-        <div class="section-label">Coordonnées</div>
-        <h2 class="section-title">Restons en contact</h2>
-        <p style="margin-bottom:1.5rem;color:var(--brun-clair);">Pour toute question sur nos ouvrages, une demande de partenariat, ou un problème d'activation de l'appli Wolof Express.</p>
+        <div class="section-label" data-i18n="cta_coordLabel">Coordonnées</div>
+        <h2 class="section-title" data-i18n="cta_coordTitle">Restons en contact</h2>
+        <p style="margin-bottom:1.5rem;color:var(--brun-clair);" data-i18n="cta_coordP">Pour toute question sur nos ouvrages, une demande de partenariat, ou un problème d'activation de l'appli Wolof Express.</p>
         <div class="steps">
           <div class="step">
             <div class="step-num">@</div>
-            <div class="step-text"><strong>E-mail</strong><span>leerukocc@gmail.com</span></div>
+            <div class="step-text"><strong data-i18n="cta_stepEmailTitle">E-mail</strong><span>leerukocc@gmail.com</span></div>
           </div>
           <div class="step">
             <div class="step-num">☎</div>
-            <div class="step-text"><strong>Téléphone</strong><span>+221 77 153 21 98</span></div>
+            <div class="step-text"><strong data-i18n="cta_stepTelTitle">Téléphone</strong><span>+221 77 153 21 98</span></div>
           </div>
           <div class="step">
             <div class="step-num">📍</div>
-            <div class="step-text"><strong>Localisation</strong><span>Dakar, Sénégal</span></div>
+            <div class="step-text"><strong data-i18n="cta_stepLocTitle">Localisation</strong><span data-i18n="cta_stepLocVal">Dakar, Sénégal</span></div>
           </div>
         </div>
       </div>
 
       <div class="form-card">
-        <h3 style="font-family:'Playfair Display',serif;margin-bottom:1.2rem;">Envoyer un message</h3>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:1.2rem;" data-i18n="cta_formTitle">Envoyer un message</h3>
         <form id="contactForm">
           <div class="field">
-            <label for="nom">Nom</label>
+            <label for="nom" data-i18n="cta_labelNom">Nom</label>
             <input type="text" id="nom" name="nom" required>
           </div>
           <div class="field">
-            <label for="email">E-mail</label>
+            <label for="email" data-i18n="cta_labelEmail">E-mail</label>
             <input type="email" id="email" name="email" required>
           </div>
           <div class="field">
-            <label for="message">Message</label>
+            <label for="message" data-i18n="cta_labelMessage">Message</label>
             <input type="text" id="message" name="message" required placeholder="Votre question ou demande">
           </div>
-          <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;">Envoyer</button>
+          <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" data-i18n="cta_btnEnvoyer">Envoyer</button>
           <div class="form-msg" id="contactMsg"></div>
         </form>
       </div>
@@ -100,32 +100,33 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand" style="display:flex;align-items:center;gap:0.6rem;"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc" style="height:36px;"> Leeru Kocc</div>
-        <p class="footer-tagline">Cabinet de promotion des langues et cultures sénégalaises. Livres, méthodes et outils numériques.</p>
+        <p class="footer-tagline" data-i18n="footer_tagline_a">Cabinet de promotion des langues et cultures sénégalaises. Livres, méthodes et outils numériques.</p>
       </div>
       <div class="footer-col">
-        <h4>Navigation</h4>
-        <a href="cours.html">Cours de Wolof</a>
-        <a href="consultance.html">Consultance &amp; Traduction</a>
-        <a href="catalogue.html">Catalogue</a>
-        <a href="galerie.html">Galerie</a>
-        <a href="a-propos.html">À propos</a>
-        <a href="wolof-express.html">Wolof Express</a>
-        <a href="contact.html">Contact</a>
+        <h4 data-i18n="footer_navTitle">Navigation</h4>
+        <a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
+        <a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a>
+        <a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a>
+        <a href="galerie.html" data-i18n="nav_galerie">Galerie</a>
+        <a href="a-propos.html" data-i18n="nav_apropos">À propos</a>
+        <a href="wolof-express.html" data-i18n="nav_wolofExpress">Wolof Express</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4 data-i18n="footer_contactTitle">Contact</h4>
         <p>leerukocc@gmail.com</p>
         <p>+221 77 153 21 98</p>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Leeru Kocc, Dakar, Sénégal</span>
-      <span>Tous droits réservés</span>
+      <span data-i18n="footer_rights">Tous droits réservés</span>
     </div>
   </div>
 </footer>
 
 <script src="assets/script.js"></script>
+<script src="assets/i18n.js"></script>
 <script>
 document.getElementById('contactForm').addEventListener('submit', function(e){
   e.preventDefault();

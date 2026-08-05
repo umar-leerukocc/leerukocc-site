@@ -8,32 +8,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lato:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body data-page="cours">
 
 <nav class="site-nav">
   <div class="wrap">
     <a href="index.html" class="brand"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc"> <span style="color:var(--or);">Leeru</span><span style="color:#FFF;"> Kocc</span></a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="cours.html" class="active">Cours de Wolof</a></li>
-      <li><a href="consultance.html">Consultance &amp; Traduction</a></li>
-      <li><a href="catalogue.html">Catalogue</a></li>
-      <li><a href="galerie.html">Galerie</a></li>
-      <li><a href="wolof-express.html">Wolof Express</a></li>
-      <li><a href="a-propos.html">À propos</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html" data-i18n="nav_accueil">Accueil</a></li>
+      <li><a href="cours.html" class="active" data-i18n="nav_cours">Cours de Wolof</a></li>
+      <li><a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a></li>
+      <li><a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a></li>
+      <li><a href="galerie.html" data-i18n="nav_galerie">Galerie</a></li>
+      <li><a href="wolof-express.html" data-i18n="nav_wolofExpress">Wolof Express</a></li>
+      <li><a href="a-propos.html" data-i18n="nav_apropos">À propos</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
     </ul>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow">Formation · Individuel &amp; groupe</div>
-    <h1>Apprenez le wolof avec Leeru Kocc</h1>
-    <p>Cours en présentiel à Dakar ou en ligne, adaptés à votre rythme, que vous partiez de zéro ou souhaitiez perfectionner une pratique déjà installée.</p>
+    <div class="hero-eyebrow" data-i18n="crs_heroEyebrow">Formation · Individuel &amp; groupe</div>
+    <h1 data-i18n="crs_h1">Apprenez le wolof avec Leeru Kocc</h1>
+    <p data-i18n="crs_heroP">Cours en présentiel à Dakar ou en ligne, adaptés à votre rythme, que vous partiez de zéro ou souhaitiez perfectionner une pratique déjà installée.</p>
     <div class="hero-actions">
-      <a href="#inscription" class="btn btn-primary">Faire une demande</a>
+      <a href="#inscription" class="btn btn-primary" data-i18n="crs_btnDemande">Faire une demande</a>
     </div>
   </div>
 </header>
@@ -42,9 +42,9 @@
   <div class="wrap">
     <div class="grid grid-2" style="align-items:center;">
       <div class="reveal">
-        <div class="section-label">En classe</div>
-        <h2 class="section-title">Des cours ancrés dans la pratique</h2>
-        <p style="color:var(--brun-clair);">Grammaire, vocabulaire, mise en situation : chaque séance combine rigueur linguistique et usage concret, à l'oral comme à l'écrit.</p>
+        <div class="section-label" data-i18n="crs_practLabel">En classe</div>
+        <h2 class="section-title" data-i18n="crs_practTitle">Des cours ancrés dans la pratique</h2>
+        <p style="color:var(--brun-clair);" data-i18n="crs_practP">Grammaire, vocabulaire, mise en situation : chaque séance combine rigueur linguistique et usage concret, à l'oral comme à l'écrit.</p>
       </div>
       <div class="photo-feature reveal" style="aspect-ratio:4/3;">
         <img src="assets/img/cours-institut-francais-1.jpg" alt="Cours de wolof en groupe">
@@ -55,30 +55,30 @@
 
 <section style="background:#FFF8EE;">
   <div class="wrap">
-    <div class="section-label">Formats</div>
-    <h2 class="section-title">Un format pour chaque besoin</h2>
-    <p class="section-intro">Tous les cours peuvent se suivre en présentiel (Dakar) ou en ligne, seul ou en petit groupe.</p>
+    <div class="section-label" data-i18n="crs_formatsLabel">Formats</div>
+    <h2 class="section-title" data-i18n="crs_formatsTitle">Un format pour chaque besoin</h2>
+    <p class="section-intro" data-i18n="crs_formatsIntro">Tous les cours peuvent se suivre en présentiel (Dakar) ou en ligne, seul ou en petit groupe.</p>
 
     <div class="grid grid-2">
       <div class="card reveal" style="padding:1.6rem;">
-        <div class="book-meta">Formule</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;">Cours individuel</h3>
-        <p style="font-size:0.9rem;color:var(--brun-clair);">Un accompagnement personnalisé, rythme adapté à votre niveau et vos objectifs : voyage, famille, travail, curiosité culturelle.</p>
+        <div class="book-meta" data-i18n="crs_c1Meta">Formule</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;" data-i18n="crs_c1Title">Cours individuel</h3>
+        <p style="font-size:0.9rem;color:var(--brun-clair);" data-i18n="crs_c1P">Un accompagnement personnalisé, rythme adapté à votre niveau et vos objectifs : voyage, famille, travail, curiosité culturelle.</p>
       </div>
       <div class="card reveal" style="padding:1.6rem;">
-        <div class="book-meta">Formule</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;">Cours en groupe</h3>
-        <p style="font-size:0.9rem;color:var(--brun-clair);">Une dynamique conviviale entre apprenants de niveau proche, en présentiel ou en visioconférence.</p>
+        <div class="book-meta" data-i18n="crs_c2Meta">Formule</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;" data-i18n="crs_c2Title">Cours en groupe</h3>
+        <p style="font-size:0.9rem;color:var(--brun-clair);" data-i18n="crs_c2P">Une dynamique conviviale entre apprenants de niveau proche, en présentiel ou en visioconférence.</p>
       </div>
       <div class="card reveal" style="padding:1.6rem;">
-        <div class="book-meta">Modalité</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;">Présentiel : Dakar</h3>
-        <p style="font-size:0.9rem;color:var(--brun-clair);">Séances en face à face, dans les locaux ou à domicile selon les disponibilités.</p>
+        <div class="book-meta" data-i18n="crs_c3Meta">Modalité</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;" data-i18n="crs_c3Title">Présentiel : Dakar</h3>
+        <p style="font-size:0.9rem;color:var(--brun-clair);" data-i18n="crs_c3P">Séances en face à face, dans les locaux ou à domicile selon les disponibilités.</p>
       </div>
       <div class="card reveal" style="padding:1.6rem;">
-        <div class="book-meta">Modalité</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;">En ligne : partout</h3>
-        <p style="font-size:0.9rem;color:var(--brun-clair);">Cours par visioconférence, accessibles depuis la diaspora ou n'importe où au Sénégal.</p>
+        <div class="book-meta" data-i18n="crs_c4Meta">Modalité</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin:0.3rem 0 0.8rem;" data-i18n="crs_c4Title">En ligne : partout</h3>
+        <p style="font-size:0.9rem;color:var(--brun-clair);" data-i18n="crs_c4P">Cours par visioconférence, accessibles depuis la diaspora ou n'importe où au Sénégal.</p>
       </div>
     </div>
   </div>
@@ -86,50 +86,50 @@
 
 <section id="inscription">
   <div class="wrap">
-    <div class="section-label">Inscription</div>
-    <h2 class="section-title">Faire une demande de cours</h2>
-    <p class="section-intro">Décrivez ce que vous cherchez : nous revenons vers vous rapidement pour caler les horaires et les modalités précises.</p>
+    <div class="section-label" data-i18n="crs_inscriptionLabel">Inscription</div>
+    <h2 class="section-title" data-i18n="crs_inscriptionTitle">Faire une demande de cours</h2>
+    <p class="section-intro" data-i18n="crs_inscriptionIntro">Décrivez ce que vous cherchez : nous revenons vers vous rapidement pour caler les horaires et les modalités précises.</p>
 
     <div class="form-card" style="max-width:560px;">
       <form id="coursForm">
         <div class="field">
-          <label for="nom">Nom complet</label>
+          <label for="nom" data-i18n="crs_labelNom">Nom complet</label>
           <input type="text" id="nom" name="nom" required>
         </div>
         <div class="field">
-          <label for="email">E-mail</label>
+          <label for="email" data-i18n="crs_labelEmail">E-mail</label>
           <input type="email" id="email" name="email" required>
         </div>
         <div class="field">
-          <label for="telephone">Téléphone (WhatsApp de préférence)</label>
+          <label for="telephone" data-i18n="crs_labelTel">Téléphone (WhatsApp de préférence)</label>
           <input type="tel" id="telephone" name="telephone" required>
         </div>
         <div class="field">
-          <label for="formule">Formule souhaitée</label>
+          <label for="formule" data-i18n="crs_labelFormule">Formule souhaitée</label>
           <select id="formule" name="formule" required style="width:100%;padding:0.8rem 1rem;border:1.5px solid #E8DFCE;border-radius:0.6rem;font-size:0.95rem;font-family:'Lato',sans-serif;background:var(--creme);color:var(--brun);">
-            <option value="">Choisissez…</option>
-            <option value="individuel-presentiel">Individuel : Présentiel</option>
-            <option value="individuel-ligne">Individuel : En ligne</option>
-            <option value="groupe-presentiel">Groupe : Présentiel</option>
-            <option value="groupe-ligne">Groupe : En ligne</option>
-            <option value="pas-sur">Pas encore décidé</option>
+            <option value="" data-i18n="msg_choose">Choisissez…</option>
+            <option value="individuel-presentiel" data-i18n="crs_opt1">Individuel : Présentiel</option>
+            <option value="individuel-ligne" data-i18n="crs_opt2">Individuel : En ligne</option>
+            <option value="groupe-presentiel" data-i18n="crs_opt3">Groupe : Présentiel</option>
+            <option value="groupe-ligne" data-i18n="crs_opt4">Groupe : En ligne</option>
+            <option value="pas-sur" data-i18n="crs_opt5">Pas encore décidé</option>
           </select>
         </div>
         <div class="field">
-          <label for="niveau">Niveau actuel</label>
+          <label for="niveau" data-i18n="crs_labelNiveau">Niveau actuel</label>
           <select id="niveau" name="niveau" required style="width:100%;padding:0.8rem 1rem;border:1.5px solid #E8DFCE;border-radius:0.6rem;font-size:0.95rem;font-family:'Lato',sans-serif;background:var(--creme);color:var(--brun);">
-            <option value="">Choisissez…</option>
-            <option value="debutant">Débutant complet</option>
-            <option value="quelques-notions">Quelques notions</option>
-            <option value="intermediaire">Intermédiaire</option>
-            <option value="avance">Avancé : perfectionnement</option>
+            <option value="" data-i18n="msg_choose">Choisissez…</option>
+            <option value="debutant" data-i18n="crs_niv1">Débutant complet</option>
+            <option value="quelques-notions" data-i18n="crs_niv2">Quelques notions</option>
+            <option value="intermediaire" data-i18n="crs_niv3">Intermédiaire</option>
+            <option value="avance" data-i18n="crs_niv4">Avancé : perfectionnement</option>
           </select>
         </div>
         <div class="field">
-          <label for="disponibilites">Disponibilités / message</label>
-          <input type="text" id="disponibilites" name="disponibilites" placeholder="Ex : soirs en semaine, week-ends...">
+          <label for="disponibilites" data-i18n="crs_labelDispo">Disponibilités / message</label>
+          <input type="text" id="disponibilites" name="disponibilites" placeholder="Ex : soirs en semaine, week-ends..." data-i18n-placeholder="crs_placeholderDispo">
         </div>
-        <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" id="coursBtn">Envoyer la demande</button>
+        <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" id="coursBtn" data-i18n="crs_btnEnvoyer">Envoyer la demande</button>
         <div class="form-msg" id="coursMsg"></div>
       </form>
     </div>
@@ -141,36 +141,38 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand" style="display:flex;align-items:center;gap:0.6rem;"><img src="assets/img/logo-leeru-kocc.png" alt="Leeru Kocc" style="height:36px;"> Leeru Kocc</div>
-        <p class="footer-tagline">Cabinet de promotion des langues et cultures sénégalaises. Livres, cours, consultance et outils numériques.</p>
+        <p class="footer-tagline" data-i18n="footer_tagline_b">Cabinet de promotion des langues et cultures sénégalaises. Livres, cours, consultance et outils numériques.</p>
       </div>
       <div class="footer-col">
-        <h4>Navigation</h4>
-        <a href="cours.html">Cours de Wolof</a>
-        <a href="consultance.html">Consultance &amp; Traduction</a>
-        <a href="catalogue.html">Catalogue</a>
-        <a href="galerie.html">Galerie</a>
-        <a href="a-propos.html">À propos</a>
-        <a href="contact.html">Contact</a>
+        <h4 data-i18n="footer_navTitle">Navigation</h4>
+        <a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
+        <a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a>
+        <a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a>
+        <a href="galerie.html" data-i18n="nav_galerie">Galerie</a>
+        <a href="a-propos.html" data-i18n="nav_apropos">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4 data-i18n="footer_contactTitle">Contact</h4>
         <p>leerukocc@gmail.com</p>
         <p>+221 77 153 21 98</p>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Éditions Leeru Kocc, Dakar, Sénégal</span>
-      <span>Tous droits réservés</span>
+      <span data-i18n="footer_rights">Tous droits réservés</span>
     </div>
   </div>
 </footer>
 
 <script src="assets/script.js"></script>
+<script src="assets/i18n.js"></script>
 <script>
 document.getElementById('coursForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const msg = document.getElementById('coursMsg');
   const btn = document.getElementById('coursBtn');
+  const T = (key, fallback) => (window.leerukoccT && window.leerukoccT(key)) || fallback;
   const data = {
     nom: document.getElementById('nom').value.trim(),
     email: document.getElementById('email').value.trim(),
@@ -180,7 +182,7 @@ document.getElementById('coursForm').addEventListener('submit', async function(e
     disponibilites: document.getElementById('disponibilites').value.trim()
   };
   msg.className = 'form-msg show loading';
-  msg.textContent = 'Envoi en cours…';
+  msg.textContent = T('msg_sending', 'Envoi en cours…');
   btn.disabled = true;
   try {
     const res = await fetch('/.netlify/functions/submit-request', {
@@ -191,15 +193,15 @@ document.getElementById('coursForm').addEventListener('submit', async function(e
     const result = await res.json();
     if (res.ok && result.success) {
       msg.className = 'form-msg show success';
-      msg.textContent = 'Demande envoyée ! Nous vous recontactons rapidement.';
+      msg.textContent = T('msg_sent', 'Demande envoyée ! Nous vous recontactons rapidement.');
       this.reset();
     } else {
       msg.className = 'form-msg show error';
-      msg.textContent = result.message || "Erreur lors de l'envoi. Réessayez.";
+      msg.textContent = result.message || T('msg_sendError', "Erreur lors de l'envoi. Réessayez.");
     }
   } catch (err) {
     msg.className = 'form-msg show error';
-    msg.textContent = 'Erreur de connexion. Réessayez.';
+    msg.textContent = T('msg_connError', 'Erreur de connexion. Réessayez.');
   } finally {
     btn.disabled = false;
   }
