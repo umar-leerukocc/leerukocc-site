@@ -294,6 +294,7 @@
       wex_activerIntro: 'The code is on the card inserted in your book. It only works once.',
       wex_labelCode: 'Access code',
       wex_btnActiver: 'Activate the app',
+      wex_acceptCgv: 'I accept the <a href="cgv.html" target="_blank" rel="noopener">Terms of Sale</a> and <a href="confidentialite.html" target="_blank" rel="noopener">Privacy Policy</a>, and acknowledge that access to the digital product is provided immediately after payment.',
     },
   };
 
