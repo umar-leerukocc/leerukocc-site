@@ -11,10 +11,12 @@
 const AIRTABLE_BASE_ID = 'appG0iNSflu90A1dw';
 const AIRTABLE_TABLE_ID = 'tblZoVQ5YjbRFkAg5'; // "Tous les codes"
 
-// ⚠️ À confirmer avec Oumar : les valeurs exactes du menu déroulant "Statut"
-// dans Airtable. Ajuste ces deux constantes si les libellés diffèrent.
 const STATUT_DISPONIBLE = 'Non utilisé';
-const STATUT_VENDU = 'Utilisé';
+// Statut intermédiaire : le code a été payé et attribué à un acheteur, mais
+// pas encore activé sur un appareil. Distinct de "Utilisé" (réservé à
+// l'activation réelle via verify-code.js), pour ne pas bloquer le vrai
+// destinataire d'un code acheté en cadeau.
+const STATUT_VENDU = 'Vendu';
 
 function paydunyaApiBase() {
   return process.env.PAYDUNYA_MODE === 'live'
@@ -56,6 +58,7 @@ async function assignCode(recordId, email) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      typecast: true,
       fields: {
         Statut: STATUT_VENDU,
         'Email acheteur': email,
@@ -130,9 +133,33 @@ async function sendActivationEmail(toEmail, code) {
   }
 }
 
-// Extrait le token PayDunya du corps de la requête IPN, quel que soit le format
-// (PayDunya envoie généralement du form-urlencoded avec un champ "data" en JSON,
-// mais on gère aussi le JSON brut par sécurité).
+// Alerte Leeru Kocc quand le stock de codes disponibles est épuisé.
+async function sendStockAlert() {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: 'leerukocc@gmail.com',
+        subject: '⚠️ Stock de codes Wolof Express épuisé',
+        html: '<p>Un client a payé, mais il ne reste plus aucun code "Non utilisé" dans Airtable. Merci de générer un nouveau lot de codes au plus vite.</p>',
+      }),
+    });
+  } catch (err) {
+    console.error('Erreur envoi alerte stock:', err);
+  }
+}
+
+// Extrait le token PayDunya du corps de la requête IPN, quel que soit le format.
+// PayDunya envoie en réalité du form-urlencoded avec des clés en notation
+// à crochets, ex: data[response_code]=00&data[token]=xxxx&... (constaté en
+// production le 05/09/2026). On gère aussi, par sécurité, un champ "data"
+// unique contenant du JSON, un champ "token" direct, et du JSON brut.
 function extractToken(event) {
   const contentType = event.headers['content-type'] || '';
 
@@ -143,6 +170,10 @@ function extractToken(event) {
 
   // form-urlencoded
   const params = new URLSearchParams(event.body);
+
+  // Format constaté en production : data[token]=xxxx (notation à crochets)
+  if (params.get('data[token]')) return params.get('data[token]');
+
   if (params.get('token')) return params.get('token');
   if (params.get('data')) {
     try {
@@ -198,7 +229,7 @@ exports.handler = async (event) => {
     const codeRecord = await getAvailableCode();
     if (!codeRecord) {
       console.error('Plus aucun code disponible dans Airtable !');
-      // TODO : s'envoyer une alerte email/notification à ce stade — stock de codes épuisé
+      await sendStockAlert();
       return { statusCode: 200, body: 'OK - stock de codes épuisé' };
     }
 

@@ -14,7 +14,11 @@ const AIRTABLE_BASE_ID = 'appG0iNSflu90A1dw';
 const AIRTABLE_TABLE_ID = 'tblZoVQ5YjbRFkAg5'; // "Tous les codes"
 
 const STATUT_DISPONIBLE = 'Non utilisé';
-const STATUT_VENDU = 'Utilisé';
+// Statut intermédiaire : le code a été payé et attribué à un acheteur, mais
+// pas encore activé sur un appareil. Distinct de "Utilisé" (réservé à
+// l'activation réelle via verify-code.js), pour ne pas bloquer le vrai
+// destinataire d'un code acheté en cadeau.
+const STATUT_VENDU = 'Vendu';
 
 function paydunyaApiBase() {
   return process.env.PAYDUNYA_MODE === 'live'
@@ -69,6 +73,7 @@ async function assignCode(recordId, email) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      typecast: true,
       fields: {
         Statut: STATUT_VENDU,
         'Email acheteur': email,
@@ -126,6 +131,29 @@ async function sendActivationEmail(toEmail, code) {
   }
 }
 
+// Alerte Leeru Kocc quand le stock de codes disponibles est épuisé.
+// Silencieuse si RESEND_API_KEY n'est pas configuré.
+async function sendStockAlert() {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: 'leerukocc@gmail.com',
+        subject: '⚠️ Stock de codes Wolof Express épuisé',
+        html: '<p>Un client a tenté un achat, mais il ne reste plus aucun code "Non utilisé" dans Airtable. Merci de générer un nouveau lot de codes.</p>',
+      }),
+    });
+  } catch (err) {
+    console.error('Erreur envoi alerte stock:', err);
+  }
+}
+
 exports.handler = async (event) => {
   const token = event.queryStringParameters && event.queryStringParameters.token;
 
@@ -165,6 +193,7 @@ exports.handler = async (event) => {
 
     const available = await getAvailableCode();
     if (!available) {
+      await sendStockAlert();
       return { statusCode: 200, body: JSON.stringify({ status: 'completed', assigned: false, error: 'Plus de codes disponibles' }) };
     }
 
