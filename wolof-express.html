@@ -300,10 +300,23 @@ async function acheterWolofExpress(product){
         content.innerHTML =
           '<h3 style="margin-top:0;">' + (en ? 'Thank you for your purchase!' : 'Merci pour votre achat !') + '</h3>' +
           '<p>' + (en ? 'Your access code: ' : "Votre code d'accès : ") + '<strong style="letter-spacing:1px;">' + data.code + '</strong></p>' +
-          '<p style="color:#666;font-size:0.9em;">' + (en ? 'Keep this code. You will be redirected to your app…' : 'Conservez ce code. Vous allez être redirigé vers votre appli…') + '</p>';
-        setTimeout(function(){
-          window.location.href = 'app/wolof-express-audio.html?unlocked=1';
-        }, 3000);
+          '<p style="color:#666;font-size:0.9em;">' + (en
+            ? 'We\'ve also sent it by email. Is this app for you? Activate it below. Buying it as a gift? Just share this code — the recipient can activate it themselves, on their own device.'
+            : 'Il vous a aussi été envoyé par e-mail. Cette appli est pour vous ? Activez-la ci-dessous. Vous l\'offrez ? Partagez simplement ce code — la personne pourra l\'activer elle-même, sur son propre appareil.') + '</p>' +
+          '<button type="button" id="confirmActivateBtn" class="btn btn-terracotta" style="width:100%;justify-content:center;margin-top:0.75rem;">' +
+          (en ? 'Activate on this device' : 'Activer sur cet appareil') + '</button>' +
+          '<button type="button" id="confirmCloseBtn" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.6rem;">' +
+          (en ? 'Close' : 'Fermer') + '</button>';
+
+        document.getElementById('confirmActivateBtn').addEventListener('click', function(){
+          document.getElementById('code').value = data.code;
+          overlay.style.display = 'none';
+          document.getElementById('activer').scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('email').focus();
+        });
+        document.getElementById('confirmCloseBtn').addEventListener('click', function(){
+          overlay.style.display = 'none';
+        });
       } else if(data.status === 'completed'){
         content.innerHTML =
           '<h3 style="margin-top:0;">' + (en ? 'Payment received' : 'Paiement reçu') + '</h3>' +
