@@ -133,6 +133,92 @@ async function sendActivationEmail(toEmail, code) {
   }
 }
 
+// Catalogue des produits (doit rester cohérent avec create-invoice.js)
+const PRODUCTS = {
+  app_only: { label: 'Wolof Express — Accès application', amount: 5900 },
+  book_app: { label: 'Wolof Express — Livre + Application', amount: 9900 },
+};
+
+// Envoie une facture Leeru Kocc en bonne et due forme (distincte du reçu
+// générique envoyé par PayDunya). Numéro de facture dérivé du code
+// d'activation (unique), pas une numérotation séquentielle stricte au sens
+// comptable — à faire valider par un comptable si nécessaire.
+async function sendInvoiceEmail(toEmail, code, productKey, amount) {
+  if (!process.env.RESEND_API_KEY) return;
+
+  const product = PRODUCTS[productKey] || { label: 'Wolof Express', amount: amount || '' };
+  const invoiceNumber = `LK-${code}`;
+  const invoiceDate = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+  const total = amount || product.amount;
+
+  const html = `
+    <div style="font-family:sans-serif; max-width:560px; margin:0 auto; color:#3A2A18;">
+      <div style="border-bottom:2px solid #A0895D; padding-bottom:16px; margin-bottom:24px;">
+        <img src="https://leerukocc.com/assets/img/logo-leeru-kocc.png" alt="Leeru Kocc" style="height:48px; margin-bottom:8px;">
+        <h1 style="color:#5C411D; font-size:1.4em; margin:0;">Leeru Kocc</h1>
+        <p style="font-size:0.8em; color:#777; margin:4px 0 0;">
+          Entreprise individuelle — RCCM SN.DAKAR.2022.A.781 — NINEA 009107964<br>
+          26, Route de la Corniche Ouest, Ouakam, Dakar, Sénégal
+        </p>
+      </div>
+
+      <h2 style="color:#5C411D; font-size:1.2em;">Facture n° ${invoiceNumber}</h2>
+      <p style="font-size:0.9em; color:#555;">Date d'émission : ${invoiceDate}<br>Client : ${toEmail}</p>
+
+      <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+        <thead>
+          <tr style="background:#f5f0e8; text-align:left;">
+            <th style="padding:10px; font-size:0.85em; color:#5C411D;">Désignation</th>
+            <th style="padding:10px; font-size:0.85em; color:#5C411D; text-align:center;">Qté</th>
+            <th style="padding:10px; font-size:0.85em; color:#5C411D; text-align:right;">Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:10px; border-bottom:1px solid #eee; font-size:0.9em;">${product.label}</td>
+            <td style="padding:10px; border-bottom:1px solid #eee; font-size:0.9em; text-align:center;">1</td>
+            <td style="padding:10px; border-bottom:1px solid #eee; font-size:0.9em; text-align:right;">${total} FCFA</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="text-align:right; font-weight:bold; font-size:1.1em; color:#5C411D; margin-top:12px;">
+        Total : ${total} FCFA
+      </p>
+
+      <p style="font-size:0.85em; color:#777; margin-top:8px;">
+        Paiement réglé en ligne via PayDunya. Code d'activation associé : ${code}.
+      </p>
+
+      <p style="font-size:0.8em; color:#999; margin-top:32px; border-top:1px solid #eee; padding-top:16px;">
+        Une question sur cette facture ? Écrivez-nous à
+        <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
+      </p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Leeru Kocc <contact@leerukocc.com>',
+        to: toEmail,
+        subject: `Facture Leeru Kocc n° ${invoiceNumber}`,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error('Erreur envoi facture Resend:', await res.text());
+    }
+  } catch (err) {
+    console.error('Erreur envoi facture Resend:', err);
+  }
+}
+
 // Alerte Leeru Kocc quand le stock de codes disponibles est épuisé.
 async function sendStockAlert() {
   if (!process.env.RESEND_API_KEY) return;
@@ -239,6 +325,11 @@ exports.handler = async (event) => {
 
     // 5. Envoyer l'email avec le code (silencieux si RESEND_API_KEY absent)
     await sendActivationEmail(buyerEmail, activationCode);
+
+    // 6. Envoyer la facture Leeru Kocc (distincte du reçu PayDunya)
+    const productKey = customData.product;
+    const paidAmount = confirmation.total_amount || confirmation.amount;
+    await sendInvoiceEmail(buyerEmail, activationCode, productKey, paidAmount);
 
     console.log(`Code ${activationCode} attribué à ${buyerEmail}`);
     return { statusCode: 200, body: 'OK' };
