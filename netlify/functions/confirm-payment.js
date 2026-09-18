@@ -110,7 +110,7 @@ async function sendInvoiceEmail(toEmail, code, productKey, amount) {
         <h1 style="color:#5C411D; font-size:1.4em; margin:0;">Leeru Kocc</h1>
         <p style="font-size:0.8em; color:#777; margin:4px 0 0;">
           Entreprise individuelle — RCCM SN.DAKAR.2022.A.781 — NINEA 009107964<br>
-          26, Route de la Corniche Ouest, Ouakam, Dakar, Sénégal
+          Almadies II, Sortie 9 péage, Dakar, Sénégal
         </p>
       </div>
 
