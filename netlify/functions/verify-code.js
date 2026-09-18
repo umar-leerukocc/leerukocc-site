@@ -16,6 +16,36 @@
 //                        Ne JAMAIS écrire sa valeur dans ce fichier.
 // ===========================================================
 
+// Envoie une alerte discrète à l'acheteur à chaque réactivation d'un code
+// déjà utilisé (même e-mail) — traçabilité en cas de partage abusif, sans
+// jamais bloquer l'accès légitime. Silencieux si RESEND_API_KEY absent.
+async function sendReactivationAlert(email, code) {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: email,
+        subject: 'Nouvelle connexion à votre appli Wolof Express',
+        html: `
+          <div style="font-family:sans-serif; max-width:480px; margin:0 auto; color:#3A2A18;">
+            <p>Bonjour,</p>
+            <p>Votre code d'activation Wolof Express (<strong>${code}</strong>) vient d'être utilisé pour accéder à l'appli sur un appareil ou un navigateur.</p>
+            <p style="font-size:0.9em; color:#777;">Si c'est bien vous (nouveau téléphone, cache vidé...), aucune action nécessaire. Si ce n'est pas vous, contactez-nous immédiatement à <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.</p>
+          </div>
+        `,
+      }),
+    });
+  } catch (err) {
+    console.error('Erreur envoi alerte réactivation:', err);
+  }
+}
+
 exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ success: false, message: 'Méthode non autorisée.' }) };
@@ -82,11 +112,13 @@ exports.handler = async function (event) {
       // le code ni toucher à Airtable. On ne bloque que si l'e-mail diffère
       // (quelqu'un d'autre essaie d'utiliser un code qui ne lui appartient pas).
       if (registeredEmail && registeredEmail === email.toLowerCase()) {
+        await sendReactivationAlert(email, code);
         return {
           statusCode: 200,
           body: JSON.stringify({
             success: true,
-            appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1'
+            appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1',
+            progress: record.fields['Progression'] || null
           })
         };
       }
@@ -118,7 +150,8 @@ exports.handler = async function (event) {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1'
+        appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1',
+        progress: record.fields['Progression'] || null
       })
     };
   } catch (err) {
