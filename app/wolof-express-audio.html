@@ -704,9 +704,19 @@ const UI = {
 // ── ACCÈS COMPLET (démo gratuite Saluer + Se présenter, reste réservé aux acheteurs) ──
 const DEMO_THEME_LIMIT = 2; // nombre de thèmes en accès libre sans code
 const urlParams = new URLSearchParams(window.location.search);
+// Le code et l'e-mail arrivent uniquement au moment de l'activation (redirection
+// depuis wolof-express.html après vérification du code) — on les garde en local
+// pour pouvoir resynchroniser discrètement la progression avec le serveur ensuite.
+const _urlCode = urlParams.get('code');
+const _urlEmail = urlParams.get('email');
+const _urlProgress = urlParams.get('progress'); // progression sauvegardée côté serveur, en base64
 if (urlParams.get('unlocked') === '1') {
   localStorage.setItem('wolofFullAccess', '1');
-  // nettoie l'URL pour ne pas laisser le paramètre traîner dans les partages
+}
+if (_urlCode) localStorage.setItem('wolofCode', _urlCode);
+if (_urlEmail) localStorage.setItem('wolofEmail', _urlEmail.toLowerCase());
+if (urlParams.get('unlocked') === '1' || _urlCode || _urlEmail || _urlProgress) {
+  // nettoie l'URL pour ne pas laisser ces paramètres (dont l'e-mail) traîner dans les partages
   window.history.replaceState({}, '', window.location.pathname + window.location.hash);
 }
 let fullAccess = localStorage.getItem('wolofFullAccess') === '1';
@@ -979,8 +989,48 @@ let quizQuestions=[],quizCurrent=0,quizScore=0,selectedThemeId=null,currentQuizT
 // ── PROGRESSION ──────────────────────────────────────────────────────────────
 const PROGRESS_KEY='wolofProgress';
 function loadProgress(){ try{ return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}; } catch(e){ return {}; } }
-function saveProgress(){ try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch(e){} }
+
+// ── Synchronisation serveur (Airtable), en tâche de fond ────────────────────
+// Le localStorage reste la SEULE source dont l'appli dépend pour fonctionner :
+// tout ce qui suit est une sauvegarde de secours, jamais un prérequis. Si le
+// réseau est absent ou la requête échoue, on l'ignore silencieusement — rien
+// ne casse le mode hors ligne, et la prochaine sauvegarde retentera.
+const SAVE_PROGRESS_ENDPOINT = '/.netlify/functions/save-progress';
+let _syncTimer = null;
+function scheduleServerSync(){
+  const code = localStorage.getItem('wolofCode');
+  const email = localStorage.getItem('wolofEmail');
+  if (!code || !email) return; // démo ou code passe-partout : rien à synchroniser côté serveur
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(() => {
+    fetch(SAVE_PROGRESS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, email, progress })
+    }).catch(() => {});
+  }, 1500); // regroupe plusieurs sauvegardes rapprochées (quiz enchaînés) en un seul envoi
+}
+function saveProgress(){
+  try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch(e){}
+  scheduleServerSync();
+}
 let progress = loadProgress();
+// Restaure la progression envoyée par le serveur au moment de l'activation
+// (nouvel appareil, cache vidé...). On ne garde, thème par thème, que la
+// version la plus avancée entre le local et le serveur — jamais un recul.
+if (_urlProgress) {
+  try {
+    const serverProgress = JSON.parse(decodeURIComponent(escape(atob(_urlProgress))));
+    Object.keys(serverProgress||{}).forEach(themeId => {
+      const local = progress[themeId];
+      const server = serverProgress[themeId];
+      const localTotal = local ? (local.classicPct||0) + (local.pronoPct||0) : -1;
+      const serverTotal = server ? (server.classicPct||0) + (server.pronoPct||0) : -1;
+      if (serverTotal > localTotal) progress[themeId] = server;
+    });
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  } catch(e) {}
+}
 function themeScore(themeId){
   const p = progress[themeId];
   if(!p || p.classicPct==null || p.pronoPct==null) return null;
