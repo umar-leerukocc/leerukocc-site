@@ -9,6 +9,11 @@
 //   AIRTABLE_BASE_ID   → identifiant de la base Airtable
 //   AIRTABLE_TABLE     → nom de la table (ex: "Tous les codes")
 //   APP_DOWNLOAD_URL   → lien vers wolof-express-audio.html une fois hébergé
+//   WOLOF_MASTER_CODE  → (optionnel) code passe-partout pour tests/démos,
+//                        donne un accès complet sans consommer de code
+//                        Airtable. Si cette variable n'est pas définie,
+//                        aucun code passe-partout n'est actif.
+//                        Ne JAMAIS écrire sa valeur dans ce fichier.
 // ===========================================================
 
 exports.handler = async function (event) {
@@ -29,13 +34,13 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: JSON.stringify({ success: false, message: 'Code et e-mail requis.' }) };
   }
 
-  const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE, APP_DOWNLOAD_URL } = process.env;
+  const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE, APP_DOWNLOAD_URL, WOLOF_MASTER_CODE } = process.env;
 
   // Code passe-partout : donne accès sans consommer ni vérifier un code Airtable.
   // Utile pour les démonstrations, les tests, ou l'équipe Leeru Kocc.
-  // Ne jamais communiquer ce code publiquement.
-  const MASTER_CODE = 'LEERUKOCC-MASTER';
-  if (code === MASTER_CODE) {
+  // Sa valeur vit uniquement dans les variables d'environnement Netlify,
+  // jamais dans ce fichier ni dans le dépôt Git.
+  if (WOLOF_MASTER_CODE && code === WOLOF_MASTER_CODE.trim().toUpperCase()) {
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -68,8 +73,23 @@ exports.handler = async function (event) {
 
     const record = searchData.records[0];
     const statut = record.fields['Statut'];
+    const registeredEmail = (record.fields['Email acheteur'] || '').trim().toLowerCase();
 
     if (statut === 'Utilisé') {
+      // Le code a déjà servi. Si c'est la même personne qui redemande l'accès
+      // (même e-mail) — par exemple après avoir changé d'appareil ou vidé
+      // son navigateur — on la laisse rentrer à nouveau, sans re-consommer
+      // le code ni toucher à Airtable. On ne bloque que si l'e-mail diffère
+      // (quelqu'un d'autre essaie d'utiliser un code qui ne lui appartient pas).
+      if (registeredEmail && registeredEmail === email.toLowerCase()) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            success: true,
+            appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1'
+          })
+        };
+      }
       return { statusCode: 200, body: JSON.stringify({ success: false, message: 'Ce code a déjà été utilisé.' }) };
     }
 
