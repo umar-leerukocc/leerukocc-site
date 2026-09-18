@@ -235,9 +235,21 @@ document.getElementById('activationForm').addEventListener('submit', async funct
     const data = await res.json();
 
     if(res.ok && data.success){
+      // On complète le lien vers l'appli avec le code, l'e-mail et la progression
+      // sauvegardée côté serveur (s'il y en a une) : l'appli s'en sert pour
+      // restaurer la progression sur ce nouvel appareil/navigateur, et pour
+      // savoir avec quel code/e-mail resynchroniser ensuite en arrière-plan.
+      let appUrl = data.appUrl
+        + '&code=' + encodeURIComponent(code)
+        + '&email=' + encodeURIComponent(email);
+      if (data.progress) {
+        try {
+          appUrl += '&progress=' + encodeURIComponent(btoa(unescape(encodeURIComponent(data.progress))));
+        } catch(e) {}
+      }
       msg.className = 'form-msg show success';
       msg.innerHTML = (isEn() ? 'Code valid! ' : 'Code validé ! ') +
-        '<a href="' + data.appUrl + '" style="text-decoration:underline;">' +
+        '<a href="' + appUrl + '" style="text-decoration:underline;">' +
         (isEn() ? 'Click here to open your audio app' : 'Cliquez ici pour ouvrir votre appli audio') + '</a>.';
     } else {
       msg.className = 'form-msg show error';
