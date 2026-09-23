@@ -20,6 +20,7 @@
   // ── Navigation (partagée par toutes les pages) ──────────────
   const NAV_EN = {
     nav_accueil: 'Home',
+    nav_apprendreWolof: 'Learn Wolof',
     nav_cours: 'Wolof Courses',
     nav_consultance: 'Consulting &amp; Translation',
     nav_catalogue: 'Catalogue',
