@@ -272,6 +272,35 @@ function extractToken(event) {
   return null;
 }
 
+// Accusé de réception interne : notifie umar@leerukocc.com à chaque achat,
+// avec l'e-mail de l'acheteur et le code qui vient de lui être envoyé.
+async function sendInternalPurchaseNotice(buyerEmail, code) {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: 'umar@leerukocc.com',
+        subject: `Nouvel achat Wolof Express — ${code}`,
+        html: `
+          <div style="font-family:sans-serif; color:#3A2A18;">
+            <p><strong>Nouvel achat confirmé.</strong></p>
+            <p>E-mail acheteur : ${buyerEmail}<br>
+            Code envoyé : ${code}</p>
+          </div>
+        `,
+      }),
+    });
+  } catch (err) {
+    console.error('Erreur envoi accusé de réception interne:', err);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -325,6 +354,9 @@ exports.handler = async (event) => {
 
     // 5. Envoyer l'email avec le code (silencieux si RESEND_API_KEY absent)
     await sendActivationEmail(buyerEmail, activationCode);
+
+    // 5bis. Accusé de réception interne à umar@leerukocc.com
+    await sendInternalPurchaseNotice(buyerEmail, activationCode);
 
     // 6. Envoyer la facture Leeru Kocc (distincte du reçu PayDunya)
     const productKey = customData.product;

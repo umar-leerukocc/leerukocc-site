@@ -241,6 +241,35 @@ async function sendStockAlert() {
   }
 }
 
+// Accusé de réception interne : notifie umar@leerukocc.com à chaque achat,
+// avec l'e-mail de l'acheteur et le code qui vient de lui être envoyé.
+async function sendInternalPurchaseNotice(buyerEmail, code) {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Wolof Express <contact@leerukocc.com>',
+        to: 'umar@leerukocc.com',
+        subject: `Nouvel achat Wolof Express — ${code}`,
+        html: `
+          <div style="font-family:sans-serif; color:#3A2A18;">
+            <p><strong>Nouvel achat confirmé.</strong></p>
+            <p>E-mail acheteur : ${buyerEmail}<br>
+            Code envoyé : ${code}</p>
+          </div>
+        `,
+      }),
+    });
+  } catch (err) {
+    console.error('Erreur envoi accusé de réception interne:', err);
+  }
+}
+
 exports.handler = async (event) => {
   const token = event.queryStringParameters && event.queryStringParameters.token;
 
@@ -286,6 +315,7 @@ exports.handler = async (event) => {
 
     await assignCode(available.id, email);
     await sendActivationEmail(email, available.fields.Code);
+    await sendInternalPurchaseNotice(email, available.fields.Code);
 
     const productKey = confirmation.custom_data && confirmation.custom_data.product;
     const paidAmount = confirmation.total_amount || confirmation.amount;

@@ -46,57 +46,27 @@ async function sendReactivationAlert(email, code) {
   }
 }
 
-// Génère un code de confirmation à 6 chiffres, valable 10 minutes.
-const OTP_VALIDITY_MINUTES = 10;
-function generateOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000));
+// Formate la géolocalisation fournie automatiquement par Netlify (approximative,
+// basée sur l'IP) en une chaîne lisible, pour tracer la première connexion.
+function formatLocation(context) {
+  const geo = context && context.geo;
+  if (!geo) return 'Localisation inconnue';
+  const city = geo.city || '';
+  const country = geo.country && geo.country.name;
+  if (city && country) return `${city}, ${country}`;
+  return country || 'Localisation inconnue';
 }
 
-// Envoie le code de confirmation par e-mail. Retourne true si l'envoi a réussi
-// (ou si RESEND_API_KEY n'est pas configuré — cas des tests locaux, où l'on ne
-// veut pas bloquer le flux ; dans ce cas le code reste consultable dans Airtable).
-async function sendOtpEmail(email, code, otp) {
-  if (!process.env.RESEND_API_KEY) return true;
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Wolof Express <contact@leerukocc.com>',
-        to: email,
-        subject: 'Code de confirmation Wolof Express',
-        html: `
-          <div style="font-family:sans-serif; max-width:480px; margin:0 auto; color:#3A2A18;">
-            <p>Bonjour,</p>
-            <p>Quelqu'un essaie d'accéder à votre appli Wolof Express (code <strong>${code}</strong>) depuis un nouvel appareil ou navigateur.</p>
-            <p>Pour confirmer que c'est bien vous, entrez ce code de confirmation :</p>
-            <p style="font-size:1.6em; font-weight:bold; letter-spacing:0.15em; text-align:center; margin:1em 0;">${otp}</p>
-            <p style="font-size:0.9em; color:#777;">Ce code expire dans ${OTP_VALIDITY_MINUTES} minutes. Si vous n'êtes pas à l'origine de cette tentative, ignorez cet e-mail — personne ne pourra rentrer sans ce code.</p>
-          </div>
-        `,
-      }),
-    });
-    return res.ok;
-  } catch (err) {
-    console.error('Erreur envoi OTP:', err);
-    return false;
-  }
-}
-
-exports.handler = async function (event) {
+exports.handler = async function (event, context) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ success: false, message: 'Méthode non autorisée.' }) };
   }
 
-  let code, email, otp;
+  let code, email;
   try {
     const body = JSON.parse(event.body);
     code = (body.code || '').trim().toUpperCase();
     email = (body.email || '').trim();
-    otp = (body.otp || '').trim();
   } catch (e) {
     return { statusCode: 400, body: JSON.stringify({ success: false, message: 'Requête invalide.' }) };
   }
@@ -147,58 +117,28 @@ exports.handler = async function (event) {
     const registeredEmail = (record.fields['Email acheteur'] || '').trim().toLowerCase();
 
     if (statut === 'Utilisé') {
-      // Le code a déjà servi. On ne laisse rentrer que la même personne
-      // (même e-mail), et seulement après confirmation par un code envoyé
-      // à cet e-mail — pour empêcher quelqu'un qui devine juste l'adresse
-      // associée à un code de rentrer sans y avoir vraiment accès.
-      if (!registeredEmail || registeredEmail !== email.toLowerCase()) {
-        return { statusCode: 200, body: JSON.stringify({ success: false, message: 'Ce code a déjà été utilisé.' }) };
+      // Le code a déjà servi. Si c'est la même personne qui redemande l'accès
+      // (même e-mail) — par exemple après avoir changé d'appareil ou vidé
+      // son navigateur — on la laisse rentrer à nouveau, sans re-consommer
+      // le code ni toucher à Airtable. On ne bloque que si l'e-mail diffère
+      // (quelqu'un d'autre essaie d'utiliser un code qui ne lui appartient pas).
+      if (registeredEmail && registeredEmail === email.toLowerCase()) {
+        await sendReactivationAlert(email, code);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            success: true,
+            appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1',
+            progress: record.fields['Progression'] || null
+          })
+        };
       }
-
-      if (!otp) {
-        // Étape 1 : pas encore de code de confirmation saisi → on en génère
-        // un, on le stocke avec sa date d'expiration, et on l'envoie par e-mail.
-        const newOtp = generateOtp();
-        const expireAt = new Date(Date.now() + OTP_VALIDITY_MINUTES * 60000).toISOString();
-
-        await fetch(`${airtableUrl}/${record.id}`, {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ typecast: true, fields: { OTP: newOtp, 'OTP Expire': expireAt } })
-        });
-
-        const sent = await sendOtpEmail(email, code, newOtp);
-        if (!sent) {
-          return { statusCode: 500, body: JSON.stringify({ success: false, message: "Impossible d'envoyer l'e-mail de confirmation. Réessayez dans un instant." }) };
-        }
-        return { statusCode: 200, body: JSON.stringify({ success: false, otpRequired: true, message: 'Un code de confirmation vient de vous être envoyé par e-mail.' }) };
-      }
-
-      // Étape 2 : un code de confirmation a été saisi → on le vérifie.
-      const storedOtp = record.fields['OTP'];
-      const otpExpire = record.fields['OTP Expire'];
-      if (!storedOtp || otp !== storedOtp || !otpExpire || new Date(otpExpire) < new Date()) {
-        return { statusCode: 200, body: JSON.stringify({ success: false, otpRequired: true, message: 'Code de confirmation invalide ou expiré. Redemandez un nouveau code.' }) };
-      }
-
-      // Code de confirmation valide : accès accordé, on efface l'OTP consommé.
-      await fetch(`${airtableUrl}/${record.id}`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ typecast: true, fields: { OTP: '', 'OTP Expire': '' } })
-      });
-      await sendReactivationAlert(email, code);
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          appUrl: (APP_DOWNLOAD_URL || '/app/wolof-express-audio.html') + '?unlocked=1',
-          progress: record.fields['Progression'] || null
-        })
-      };
+      return { statusCode: 200, body: JSON.stringify({ success: false, message: 'Ce code a déjà été utilisé.' }) };
     }
 
-    // 2. Marquer le code comme utilisé
+    // 2. Marquer le code comme utilisé et tracer la première connexion
+    //    (date + localisation approximative fournie par Netlify)
+    const firstConnectionNote = `${formatLocation(context)} — ${new Date().toISOString().slice(0, 16).replace('T', ' ')}`;
     const updateRes = await fetch(`${airtableUrl}/${record.id}`, {
       method: 'PATCH',
       headers: {
@@ -210,7 +150,8 @@ exports.handler = async function (event) {
         fields: {
           Statut: 'Utilisé',
           'Email acheteur': email,
-          "Date d'activation": new Date().toISOString().slice(0, 10)
+          "Date d'activation": new Date().toISOString().slice(0, 10),
+          'Première connexion': firstConnectionNote
         }
       })
     });
