@@ -64,7 +64,6 @@
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" data-i18n="nav_accueil">Accueil</a></li>
-      <li><a href="apprendre-le-wolof.html" data-i18n="nav_apprendreWolof">Apprendre le wolof</a></li>
       <li><a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a></li>
       <li><a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a></li>
       <li><a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a></li>
@@ -169,10 +168,6 @@
           <label for="email" data-i18n="wex_labelEmail">Votre e-mail</label>
           <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
         </div>
-        <div class="field" id="otpField" style="display:none;">
-          <label for="otp" data-i18n="wex_labelOtp">Code de confirmation reçu par e-mail</label>
-          <input type="text" id="otp" name="otp" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="off">
-        </div>
         <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" id="activateBtn" data-i18n="wex_btnActiver">Activer l'appli</button>
         <div class="form-msg" id="activationMsg"></div>
       </form>
@@ -189,8 +184,7 @@
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_navTitle">Navigation</h4>
-                <a href="apprendre-le-wolof.html" data-i18n="nav_apprendreWolof">Apprendre le wolof</a>
-<a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
+        <a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
         <a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a>
         <a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a>
         <a href="galerie.html" data-i18n="nav_galerie">Galerie</a>
@@ -221,65 +215,31 @@
 function T(key, fallback){ return (window.leerukoccT && window.leerukoccT(key)) || fallback; }
 function isEn(){ return window.leerukoccLang && window.leerukoccLang() === 'en'; }
 
-let otpRequired = false;
 document.getElementById('activationForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const code = document.getElementById('code').value.trim().toUpperCase();
   const email = document.getElementById('email').value.trim();
-  const otpField = document.getElementById('otpField');
-  const otp = document.getElementById('otp').value.trim();
   const msg = document.getElementById('activationMsg');
   const btn = document.getElementById('activateBtn');
-  const defaultBtnLabel = T('wex_btnActiver', "Activer l'appli");
-  const confirmBtnLabel = isEn() ? 'Confirm' : 'Confirmer';
 
   msg.className = 'form-msg show loading';
   msg.textContent = isEn() ? 'Checking…' : 'Vérification en cours…';
   btn.disabled = true;
 
   try{
-    const payload = { code, email };
-    if (otpRequired) payload.otp = otp;
     const res = await fetch('/.netlify/functions/verify-code', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ code, email })
     });
     const data = await res.json();
 
     if(res.ok && data.success){
-      // On complète le lien vers l'appli avec le code, l'e-mail et la progression
-      // sauvegardée côté serveur (s'il y en a une) : l'appli s'en sert pour
-      // restaurer la progression sur ce nouvel appareil/navigateur, et pour
-      // savoir avec quel code/e-mail resynchroniser ensuite en arrière-plan.
-      let appUrl = data.appUrl
-        + '&code=' + encodeURIComponent(code)
-        + '&email=' + encodeURIComponent(email);
-      if (data.progress) {
-        try {
-          appUrl += '&progress=' + encodeURIComponent(btoa(unescape(encodeURIComponent(data.progress))));
-        } catch(e) {}
-      }
-      otpRequired = false;
-      otpField.style.display = 'none';
-      btn.textContent = defaultBtnLabel;
       msg.className = 'form-msg show success';
       msg.innerHTML = (isEn() ? 'Code valid! ' : 'Code validé ! ') +
-        '<a href="' + appUrl + '" style="text-decoration:underline;">' +
+        '<a href="' + data.appUrl + '" style="text-decoration:underline;">' +
         (isEn() ? 'Click here to open your audio app' : 'Cliquez ici pour ouvrir votre appli audio') + '</a>.';
-    } else if (data.otpRequired) {
-      // Code déjà activé, sur un e-mail reconnu : une confirmation par e-mail
-      // est requise avant de laisser rentrer (protection anti-partage/fraude).
-      otpRequired = true;
-      otpField.style.display = '';
-      document.getElementById('otp').focus();
-      btn.textContent = confirmBtnLabel;
-      msg.className = 'form-msg show success';
-      msg.textContent = data.message || (isEn() ? 'A confirmation code was just sent to your email.' : 'Un code de confirmation vient de vous être envoyé par e-mail.');
     } else {
-      otpRequired = false;
-      otpField.style.display = 'none';
-      btn.textContent = defaultBtnLabel;
       msg.className = 'form-msg show error';
       msg.textContent = data.message || (isEn() ? 'This code is invalid or has already been used.' : "Ce code n'est pas valide ou a déjà été utilisé.");
     }
@@ -375,6 +335,9 @@ async function acheterWolofExpress(product){
           '<p style="color:#666;font-size:0.9em;">' + (en
             ? 'We\'ve also sent it by email. Is this app for you? Activate it below. Buying it as a gift? Just share this code — the recipient can activate it themselves, on their own device.'
             : 'Il vous a aussi été envoyé par e-mail. Cette appli est pour vous ? Activez-la ci-dessous. Vous l\'offrez ? Partagez simplement ce code — la personne pourra l\'activer elle-même, sur son propre appareil.') + '</p>' +
+          '<p style="color:#999;font-size:0.8em;margin-top:0.5rem;">' + (en
+            ? 'No email within 5 minutes? Write to <a href="mailto:umar@leerukocc.com">umar@leerukocc.com</a>.'
+            : "Pas d'e-mail reçu sous 5 minutes ? Écrivez à <a href=\"mailto:umar@leerukocc.com\">umar@leerukocc.com</a>.") + '</p>' +
           '<button type="button" id="confirmActivateBtn" class="btn btn-terracotta" style="width:100%;justify-content:center;margin-top:0.75rem;">' +
           (en ? 'Activate on this device' : 'Activer sur cet appareil') + '</button>' +
           '<button type="button" id="confirmCloseBtn" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.6rem;">' +
