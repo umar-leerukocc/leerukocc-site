@@ -66,6 +66,7 @@
       <li><a href="index.html" data-i18n="nav_accueil">Accueil</a></li>
       <li><a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a></li>
       <li><a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a></li>
+      <li><a href="decoder-le-senegal.html" data-i18n="nav_decoder">Décoder le Sénégal</a></li>
       <li><a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a></li>
       <li><a href="a-propos.html" data-i18n="nav_apropos">À propos</a></li>
       <li><a href="galerie.html" data-i18n="nav_galerie">Galerie</a></li>
@@ -186,6 +187,7 @@
         <h4 data-i18n="footer_navTitle">Navigation</h4>
         <a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
         <a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a>
+        <a href="decoder-le-senegal.html" data-i18n="nav_decoder">Décoder le Sénégal</a>
         <a href="catalogue.html" data-i18n="nav_catalogue">Catalogue</a>
         <a href="galerie.html" data-i18n="nav_galerie">Galerie</a>
         <a href="a-propos.html" data-i18n="nav_apropos">À propos</a>
@@ -292,11 +294,6 @@ async function acheterWolofExpress(product){
     const data = await res.json();
 
     if(res.ok && data.checkout_url){
-      // On garde l'e-mail en local pour pouvoir, au retour de paiement,
-      // interroger confirm-payment.js (qui n'a pas d'autre moyen de
-      // retrouver cet acheteur — Bictorys ne renvoie pas de "token" exploitable
-      // comme PayDunya).
-      try { localStorage.setItem('wolofPendingEmail', email); } catch(e){}
       window.location.href = data.checkout_url;
       return; // on quitte la page, pas besoin de réactiver les boutons
     } else {
@@ -313,65 +310,27 @@ async function acheterWolofExpress(product){
 }
 
 // ---------------------------------------------------------------
-// Retour de paiement Bictorys — se déclenche uniquement si l'URL
-// contient ?paiement=confirme (redirection automatique après un paiement
-// réussi). Contrairement à PayDunya, il n'y a pas de "token" à reconfirmer
-// immédiatement : la confirmation vient du webhook ipn-callback.js, qui peut
-// arriver avec quelques secondes de délai. On interroge donc confirm-payment.js
-// à plusieurs reprises avant d'abandonner.
+// Retour de paiement PayDunya — se déclenche uniquement si l'URL
+// contient ?paiement=confirme&token=XXXX (redirection automatique
+// après un paiement réussi). Ne dépend pas de l'IPN PayDunya, qui
+// peut arriver avec un délai : cette vérification est immédiate.
 // ---------------------------------------------------------------
 (function(){
   const params = new URLSearchParams(window.location.search);
   if(params.get('paiement') !== 'confirme') return;
-
-  let email;
-  try { email = localStorage.getItem('wolofPendingEmail'); } catch(e){}
-  if(!email) return; // e-mail introuvable (localStorage vidé, autre appareil...) : rien à vérifier automatiquement
+  const token = params.get('token');
+  if(!token) return;
 
   const overlay = document.getElementById('confirmOverlay');
   const content = document.getElementById('confirmContent');
   overlay.style.display = 'flex';
   content.innerHTML = '<p>' + (isEn() ? 'Checking your payment…' : 'Vérification de votre paiement en cours…') + '</p>';
 
-  const MAX_ATTEMPTS = 8;
-  const DELAY_MS = 3000;
-
-  function checkOnce(attempt){
-    fetch('/.netlify/functions/confirm-payment?email=' + encodeURIComponent(email))
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        if(data.assigned && data.code){
-          try { localStorage.removeItem('wolofPendingEmail'); } catch(e){}
-          showResult(data);
-        } else if(attempt < MAX_ATTEMPTS){
-          setTimeout(function(){ checkOnce(attempt + 1); }, DELAY_MS);
-        } else {
-          showPending();
-        }
-      })
-      .catch(function(){
-        if(attempt < MAX_ATTEMPTS){
-          setTimeout(function(){ checkOnce(attempt + 1); }, DELAY_MS);
-        } else {
-          showPending();
-        }
-      });
-  }
-
-  function showPending(){
-    const en = isEn();
-    content.innerHTML =
-      '<h3 style="margin-top:0;">' + (en ? 'Payment received' : 'Paiement reçu') + '</h3>' +
-      '<p>' + (en
-        ? 'We are finalizing your code. If you don\'t receive anything within 5 minutes, contact us at '
-        : "Nous finalisons l'attribution de votre code. Si vous ne recevez rien sous 5 minutes, contactez-nous à ") +
-      '<a href="mailto:umar@leerukocc.com">umar@leerukocc.com</a>' +
-      (en ? ' with your purchase email.' : ' avec votre e-mail d\'achat.') + '</p>';
-  }
-
-  function showResult(data){
-    const en = isEn();
-    if(data.assigned && data.code){
+  fetch('/.netlify/functions/confirm-payment?token=' + encodeURIComponent(token))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      const en = isEn();
+      if(data.assigned && data.code){
         content.innerHTML =
           '<h3 style="margin-top:0;">' + (en ? 'Thank you for your purchase!' : 'Merci pour votre achat !') + '</h3>' +
           '<p>' + (en ? 'Your access code: ' : "Votre code d'accès : ") + '<strong style="letter-spacing:1px;">' + data.code + '</strong></p>' +
@@ -395,10 +354,29 @@ async function acheterWolofExpress(product){
         document.getElementById('confirmCloseBtn').addEventListener('click', function(){
           overlay.style.display = 'none';
         });
-    }
-  }
-
-  checkOnce(1);
+      } else if(data.status === 'completed'){
+        content.innerHTML =
+          '<h3 style="margin-top:0;">' + (en ? 'Payment received' : 'Paiement reçu') + '</h3>' +
+          '<p>' + (en
+            ? 'We are finalizing your code. If you don\'t receive anything shortly, contact us at '
+            : "Nous finalisons l'attribution de votre code. Si vous ne recevez rien sous peu, contactez-nous à ") +
+          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a>' +
+          (en ? ' with your purchase email.' : ' avec votre e-mail d\'achat.') + '</p>';
+      } else {
+        content.innerHTML =
+          '<h3 style="margin-top:0;">' + (en ? 'Payment status: ' : 'Statut du paiement : ') + (data.status || (en ? 'unknown' : 'inconnu')) + '</h3>' +
+          '<p>' + (en ? 'If you think this is an error, contact us at ' : "Si vous pensez qu'il y a une erreur, contactez-nous à ") +
+          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a>.</p>';
+      }
+    })
+    .catch(function(){
+      const en = isEn();
+      content.innerHTML =
+        '<h3 style="margin-top:0;">' + (en ? 'An error occurred' : 'Une erreur est survenue') + '</h3>' +
+        '<p>' + (en
+          ? 'Contact us at <a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> with your purchase email, we will check manually.'
+          : 'Contactez-nous à <a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> avec votre e-mail d\'achat, nous vérifierons manuellement.') + '</p>';
+    });
 })();
 </script>
 </body>
