@@ -99,10 +99,16 @@ exports.handler = async (event) => {
       };
     }
 
-    console.error('Erreur Bictorys create-invoice:', data);
+    console.error('Erreur Bictorys create-invoice:', response.status, data);
     return {
       statusCode: 502,
-      body: JSON.stringify({ error: 'Erreur Bictorys', details: data }),
+      body: JSON.stringify({
+        // TEMPORAIRE (diagnostic) : affiche le détail renvoyé par Bictorys
+        // directement dans le message d'erreur, pour pouvoir le lire sans
+        // accès aux logs Netlify. À retirer une fois le problème résolu.
+        error: `Erreur Bictorys (HTTP ${response.status}): ${JSON.stringify(data)}`,
+        details: data,
+      }),
     };
   } catch (err) {
     console.error('Erreur serveur create-invoice:', err);
