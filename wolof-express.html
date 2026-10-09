@@ -128,8 +128,8 @@
         </label>
       </div>
       <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
-        <button type="button" class="btn btn-terracotta" style="flex:1 1 220px;justify-content:center;" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')" data-i18n="wex_btnAppOnly">Appli seule — 5 900 FCFA</button>
-        <button type="button" class="btn btn-outline" style="flex:1 1 220px;justify-content:center;" id="buyBookAppBtn" onclick="acheterWolofExpress('book_app')" data-i18n="wex_btnBookApp">Livre + Appli — 9 900 FCFA</button>
+        <button type="button" class="btn btn-terracotta" style="flex:1 1 220px;justify-content:center;" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')" data-i18n="wex_btnAppOnly">Appli seule, 5 900 FCFA</button>
+        <button type="button" class="btn btn-outline" style="flex:1 1 220px;justify-content:center;" id="buyBookAppBtn" onclick="acheterWolofExpress('book_app')" data-i18n="wex_btnBookApp">Livre + Appli, 9 900 FCFA</button>
       </div>
       <div class="form-msg" id="buyMsg"></div>
     </div>
@@ -335,8 +335,8 @@ async function acheterWolofExpress(product){
           '<h3 style="margin-top:0;">' + (en ? 'Thank you for your purchase!' : 'Merci pour votre achat !') + '</h3>' +
           '<p>' + (en ? 'Your access code: ' : "Votre code d'accès : ") + '<strong style="letter-spacing:1px;">' + data.code + '</strong></p>' +
           '<p style="color:#666;font-size:0.9em;">' + (en
-            ? 'We\'ve also sent it by email. Is this app for you? Activate it below. Buying it as a gift? Just share this code — the recipient can activate it themselves, on their own device.'
-            : 'Il vous a aussi été envoyé par e-mail. Cette appli est pour vous ? Activez-la ci-dessous. Vous l\'offrez ? Partagez simplement ce code — la personne pourra l\'activer elle-même, sur son propre appareil.') + '</p>' +
+            ? 'We\'ve also sent it by email. Is this app for you? Activate it below. Buying it as a gift? Just share this code, the recipient can activate it themselves, on their own device.'
+            : 'Il vous a aussi été envoyé par e-mail. Cette appli est pour vous ? Activez-la ci-dessous. Vous l\'offrez ? Partagez simplement ce code, la personne pourra l\'activer elle-même, sur son propre appareil.') + '</p>' +
           '<p style="color:#999;font-size:0.8em;margin-top:0.5rem;">' + (en
             ? 'No email within 5 minutes? Write to <a href="mailto:umar@leerukocc.com">umar@leerukocc.com</a>.'
             : "Pas d'e-mail reçu sous 5 minutes ? Écrivez à <a href=\"mailto:umar@leerukocc.com\">umar@leerukocc.com</a>.") + '</p>' +
