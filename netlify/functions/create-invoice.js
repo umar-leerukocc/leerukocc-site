@@ -1,7 +1,7 @@
 // netlify/functions/create-invoice.js
 //
-// Crée une facture PayDunya (Checkout Invoice) et renvoie l'URL de paiement
-// au client. Appelée depuis wolof-express.html quand le client clique "Acheter".
+// Crée un paiement Bictorys (Checkout) et renvoie l'URL de paiement au
+// client. Appelée depuis wolof-express.html quand le client clique "Acheter".
 //
 // Attend un POST avec un body JSON : { "email": "...", "product": "app_only" | "book_app" }
 
@@ -19,12 +19,12 @@ const PRODUCTS = {
   },
 };
 
-function paydunyaApiBase() {
-  // En mode test, PayDunya utilise un domaine "sandbox-api" séparé.
-  // En mode live (production), c'est "api".
-  return process.env.PAYDUNYA_MODE === 'live'
-    ? 'https://app.paydunya.com/api/v1'
-    : 'https://app.paydunya.com/sandbox-api/v1';
+function bictorysApiBase() {
+  // En mode test, Bictorys utilise un domaine séparé pour les simulations.
+  // En mode live (production), c'est api.bictorys.com.
+  return process.env.BICTORYS_MODE === 'live'
+    ? 'https://api.bictorys.com'
+    : 'https://api.test.bictorys.com';
 }
 
 exports.handler = async (event) => {
@@ -50,63 +50,59 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Produit inconnu' }) };
   }
 
-  const invoicePayload = {
-    invoice: {
-      total_amount: productInfo.amount,
-      description: productInfo.label,
-      items: {
-        item_0: {
-          name: productInfo.label,
-          quantity: 1,
-          unit_price: productInfo.amount,
-          total_price: productInfo.amount,
-        },
+  // Référence unique qui encode le produit en préfixe (ipn-callback.js et
+  // confirm-payment.js s'en servent pour retrouver quel produit a été payé,
+  // Bictorys n'ayant pas de champ "custom_data" libre comme PayDunya).
+  const reference = `${product}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+  const chargePayload = {
+    amount: productInfo.amount,
+    currency: 'XOF',
+    paymentReference: reference,
+    merchantReference: reference,
+    successRedirectUrl: `${SITE_URL}/wolof-express.html?paiement=confirme&ref=${encodeURIComponent(reference)}`,
+    errorRedirectUrl: `${SITE_URL}/wolof-express.html?paiement=annule`,
+    orderDetails: [
+      {
+        name: productInfo.label,
+        price: productInfo.amount,
+        quantity: 1,
       },
+    ],
+    customerObject: {
+      email,
+      country: 'SN',
+      locale: 'fr-FR',
     },
-    store: {
-      name: 'Leeru Kocc',
-      tagline: 'Wolof Express — Apprends le wolof',
-      website_url: SITE_URL,
-    },
-    actions: {
-      cancel_url: `${SITE_URL}/wolof-express.html?paiement=annule`,
-      return_url: `${SITE_URL}/wolof-express.html?paiement=confirme`,
-      callback_url: `${SITE_URL}/.netlify/functions/ipn-callback`,
-    },
-    custom_data: {
-      buyer_email: email,
-      product,
-    },
+    allowUpdateCustomer: false,
   };
 
   try {
-    const response = await fetch(`${paydunyaApiBase()}/checkout-invoice/create`, {
+    const response = await fetch(`${bictorysApiBase()}/pay/v1/charges`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'PAYDUNYA-MASTER-KEY': process.env.PAYDUNYA_MASTER_KEY,
-        'PAYDUNYA-PRIVATE-KEY': process.env.PAYDUNYA_PRIVATE_KEY,
-        'PAYDUNYA-PUBLIC-KEY': process.env.PAYDUNYA_PUBLIC_KEY,
-        'PAYDUNYA-TOKEN': process.env.PAYDUNYA_TOKEN,
+        // Clé PRIVÉE (secrète) côté serveur — jamais la clé publique ici.
+        'X-Api-Key': process.env.BICTORYS_SECRET_KEY,
       },
-      body: JSON.stringify(invoicePayload),
+      body: JSON.stringify(chargePayload),
     });
 
     const data = await response.json();
+    const checkoutUrl = data.link || data.paymentUrl || data.url;
 
-    // Succès : response_code "00" et response_text contient l'URL de paiement
-    if (data.response_code === '00') {
+    if (response.ok && checkoutUrl) {
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ checkout_url: data.response_text, token: data.token }),
+        body: JSON.stringify({ checkout_url: checkoutUrl, reference }),
       };
     }
 
-    console.error('Erreur PayDunya create-invoice:', data);
+    console.error('Erreur Bictorys create-invoice:', data);
     return {
       statusCode: 502,
-      body: JSON.stringify({ error: 'Erreur PayDunya', details: data.response_text || data }),
+      body: JSON.stringify({ error: 'Erreur Bictorys', details: data }),
     };
   } catch (err) {
     console.error('Erreur serveur create-invoice:', err);

@@ -1,47 +1,23 @@
 // netlify/functions/ipn-callback.js
 //
-// Appelée par PayDunya (serveur à serveur) après qu'un client a payé.
-// On NE FAIT JAMAIS confiance à l'IPN seule : on reconfirme le paiement
-// directement auprès de PayDunya avec le token reçu, puis on attribue
-// un code Wolof Express disponible dans Airtable.
+// Appelée par Bictorys (serveur à serveur) après qu'un client a payé.
+// Contrairement à PayDunya, Bictorys ne propose pas de "confirmer le
+// paiement par token" : la notification webhook EST la confirmation. On la
+// sécurise en vérifiant le header X-Secret-Key, qui doit correspondre à la
+// clé secrète de webhook configurée sur le tableau de bord Bictorys.
 //
-// TODO (prochaine étape) : brancher l'envoi d'email automatique (ex. Resend)
-// à l'endroit indiqué plus bas, une fois RESEND_API_KEY configuré.
+// ⚠️ Côté Bictorys (tableau de bord → Développeurs → Webhooks), il faut
+// renseigner manuellement cette URL : https://leerukocc.com/.netlify/functions/ipn-callback
 
 const AIRTABLE_BASE_ID = 'appG0iNSflu90A1dw';
 const AIRTABLE_TABLE_ID = 'tblZoVQ5YjbRFkAg5'; // "Tous les codes"
 
 const STATUT_DISPONIBLE = 'Non utilisé';
-// Statut intermédiaire : le code a été payé et attribué à un acheteur, mais
-// pas encore activé sur un appareil. Distinct de "Utilisé" (réservé à
-// l'activation réelle via verify-code.js), pour ne pas bloquer le vrai
-// destinataire d'un code acheté en cadeau.
 const STATUT_VENDU = 'Vendu';
-
-function paydunyaApiBase() {
-  return process.env.PAYDUNYA_MODE === 'live'
-    ? 'https://app.paydunya.com/api/v1'
-    : 'https://app.paydunya.com/sandbox-api/v1';
-}
-
-async function confirmPayment(token) {
-  const response = await fetch(`${paydunyaApiBase()}/checkout-invoice/confirm/${token}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'PAYDUNYA-MASTER-KEY': process.env.PAYDUNYA_MASTER_KEY,
-      'PAYDUNYA-PRIVATE-KEY': process.env.PAYDUNYA_PRIVATE_KEY,
-      'PAYDUNYA-PUBLIC-KEY': process.env.PAYDUNYA_PUBLIC_KEY,
-      'PAYDUNYA-TOKEN': process.env.PAYDUNYA_TOKEN,
-    },
-  });
-  return response.json();
-}
 
 async function getAvailableCode() {
   const formula = encodeURIComponent(`{Statut} = "${STATUT_DISPONIBLE}"`);
   const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}?filterByFormula=${formula}&maxRecords=1`;
-
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}` },
   });
@@ -69,10 +45,6 @@ async function assignCode(recordId, email) {
   return response.json();
 }
 
-// Protection anti double-attribution : si un code a déjà été assigné à cet
-// email (par exemple via confirm-payment.js, qui s'exécute côté client et
-// est souvent plus rapide que l'IPN), on ne réattribue pas et on n'envoie
-// pas de deuxième email.
 async function findExistingAssignedCode(email) {
   const formula = encodeURIComponent(
     `AND({Statut} = "${STATUT_VENDU}", {Email acheteur} = "${email}")`
@@ -85,15 +57,11 @@ async function findExistingAssignedCode(email) {
   return data.records && data.records[0] ? data.records[0] : null;
 }
 
-// Envoie l'email contenant le code d'activation via Resend.
-// Ne fait rien (silencieusement) si RESEND_API_KEY n'est pas encore configuré,
-// pour ne jamais faire échouer l'attribution du code à cause de l'email.
 async function sendActivationEmail(toEmail, code) {
   if (!process.env.RESEND_API_KEY) {
     console.log('RESEND_API_KEY absent — email non envoyé (code déjà attribué en base).');
     return;
   }
-
   const html = `
     <div style="font-family:sans-serif; max-width:480px; margin:0 auto; color:#3A2A18;">
       <h2 style="color:#5C411D;">Merci pour votre achat !</h2>
@@ -110,7 +78,6 @@ async function sendActivationEmail(toEmail, code) {
       </p>
     </div>
   `;
-
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -125,27 +92,19 @@ async function sendActivationEmail(toEmail, code) {
         html,
       }),
     });
-    if (!res.ok) {
-      console.error('Erreur envoi email Resend:', await res.text());
-    }
+    if (!res.ok) console.error('Erreur envoi email Resend:', await res.text());
   } catch (err) {
     console.error('Erreur envoi email Resend:', err);
   }
 }
 
-// Catalogue des produits (doit rester cohérent avec create-invoice.js)
 const PRODUCTS = {
   app_only: { label: 'Wolof Express — Accès application', amount: 5900 },
   book_app: { label: 'Wolof Express — Livre + Application', amount: 9900 },
 };
 
-// Envoie une facture Leeru Kocc en bonne et due forme (distincte du reçu
-// générique envoyé par PayDunya). Numéro de facture dérivé du code
-// d'activation (unique), pas une numérotation séquentielle stricte au sens
-// comptable — à faire valider par un comptable si nécessaire.
 async function sendInvoiceEmail(toEmail, code, productKey, amount) {
   if (!process.env.RESEND_API_KEY) return;
-
   const product = PRODUCTS[productKey] || { label: 'Wolof Express', amount: amount || '' };
   const invoiceNumber = `LK-${code}`;
   const invoiceDate = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -161,10 +120,8 @@ async function sendInvoiceEmail(toEmail, code, productKey, amount) {
           Almadies II, Sortie 9 péage, Dakar, Sénégal
         </p>
       </div>
-
       <h2 style="color:#5C411D; font-size:1.2em;">Facture n° ${invoiceNumber}</h2>
       <p style="font-size:0.9em; color:#555;">Date d'émission : ${invoiceDate}<br>Client : ${toEmail}</p>
-
       <table style="width:100%; border-collapse:collapse; margin-top:20px;">
         <thead>
           <tr style="background:#f5f0e8; text-align:left;">
@@ -181,22 +138,18 @@ async function sendInvoiceEmail(toEmail, code, productKey, amount) {
           </tr>
         </tbody>
       </table>
-
       <p style="text-align:right; font-weight:bold; font-size:1.1em; color:#5C411D; margin-top:12px;">
         Total : ${total} FCFA
       </p>
-
       <p style="font-size:0.85em; color:#777; margin-top:8px;">
-        Paiement réglé en ligne via PayDunya. Code d'activation associé : ${code}.
+        Paiement réglé en ligne via Bictorys. Code d'activation associé : ${code}.
       </p>
-
       <p style="font-size:0.8em; color:#999; margin-top:32px; border-top:1px solid #eee; padding-top:16px;">
         Une question sur cette facture ? Écrivez-nous à
         <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
       </p>
     </div>
   `;
-
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -211,15 +164,12 @@ async function sendInvoiceEmail(toEmail, code, productKey, amount) {
         html,
       }),
     });
-    if (!res.ok) {
-      console.error('Erreur envoi facture Resend:', await res.text());
-    }
+    if (!res.ok) console.error('Erreur envoi facture Resend:', await res.text());
   } catch (err) {
     console.error('Erreur envoi facture Resend:', err);
   }
 }
 
-// Alerte Leeru Kocc quand le stock de codes disponibles est épuisé.
 async function sendStockAlert() {
   if (!process.env.RESEND_API_KEY) return;
   try {
@@ -241,39 +191,6 @@ async function sendStockAlert() {
   }
 }
 
-// Extrait le token PayDunya du corps de la requête IPN, quel que soit le format.
-// PayDunya envoie en réalité du form-urlencoded avec des clés en notation
-// à crochets, ex: data[response_code]=00&data[token]=xxxx&... (constaté en
-// production le 05/09/2026). On gère aussi, par sécurité, un champ "data"
-// unique contenant du JSON, un champ "token" direct, et du JSON brut.
-function extractToken(event) {
-  const contentType = event.headers['content-type'] || '';
-
-  if (contentType.includes('application/json')) {
-    const body = JSON.parse(event.body);
-    return body.token || (body.data && JSON.parse(body.data).token);
-  }
-
-  // form-urlencoded
-  const params = new URLSearchParams(event.body);
-
-  // Format constaté en production : data[token]=xxxx (notation à crochets)
-  if (params.get('data[token]')) return params.get('data[token]');
-
-  if (params.get('token')) return params.get('token');
-  if (params.get('data')) {
-    try {
-      const parsed = JSON.parse(params.get('data'));
-      return parsed.token;
-    } catch (e) {
-      return null;
-    }
-  }
-  return null;
-}
-
-// Accusé de réception interne : notifie umar@leerukocc.com à chaque achat,
-// avec l'e-mail de l'acheteur et le code qui vient de lui être envoyé.
 async function sendInternalPurchaseNotice(buyerEmail, code) {
   if (!process.env.RESEND_API_KEY) return;
   try {
@@ -306,37 +223,45 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const token = extractToken(event);
-  if (!token) {
-    console.error('IPN reçu sans token exploitable:', event.body);
-    return { statusCode: 400, body: 'Token manquant' };
+  // 1. Vérifier la clé secrète de webhook (jamais confiance à une requête
+  //    non authentifiée — n'importe qui pourrait sinon POST sur cette URL
+  //    et se faire attribuer un code gratuitement).
+  const secretHeader = event.headers['x-secret-key'] || event.headers['X-Secret-Key'];
+  if (!process.env.BICTORYS_WEBHOOK_SECRET || secretHeader !== process.env.BICTORYS_WEBHOOK_SECRET) {
+    console.error('Webhook Bictorys reçu avec une clé secrète invalide ou absente.');
+    return { statusCode: 401, body: 'Unauthorized' };
   }
 
+  let body;
   try {
-    // 1. Reconfirmer le paiement directement auprès de PayDunya (jamais confiance à l'IPN seule)
-    const confirmation = await confirmPayment(token);
+    body = JSON.parse(event.body);
+  } catch (e) {
+    console.error('Webhook Bictorys : JSON invalide', event.body);
+    return { statusCode: 400, body: 'JSON invalide' };
+  }
 
-    const status = confirmation.status || (confirmation.invoice && confirmation.invoice.status);
+  const status = (body.status || '').toLowerCase();
+  if (status !== 'succeeded' && status !== 'authorized') {
+    console.log('Webhook Bictorys : statut non concluant, ignoré ->', status);
+    return { statusCode: 200, body: 'OK - statut non concluant, ignoré' };
+  }
 
-    if (confirmation.response_code !== '00' || status !== 'completed') {
-      console.log('Paiement non complété, statut:', status);
-      return { statusCode: 200, body: 'OK - paiement non complété, ignoré' };
-    }
+  const buyerEmail = body.customerObject && body.customerObject.email;
+  if (!buyerEmail) {
+    console.error('Webhook Bictorys : paiement confirmé mais aucun email trouvé', body);
+    return { statusCode: 200, body: 'OK - email manquant' };
+  }
 
-    const customData = confirmation.custom_data || (confirmation.invoice && confirmation.invoice.custom_data) || {};
-    const buyerEmail = customData.buyer_email;
+  // Le produit est encodé en préfixe de la référence par create-invoice.js
+  // (ex: "app_only_1234567890_ab12cd").
+  const reference = body.paymentReference || body.merchantReference || '';
+  const productKey = reference.startsWith('book_app') ? 'book_app' : 'app_only';
 
-    if (!buyerEmail) {
-      console.error('Paiement confirmé mais aucun email trouvé dans custom_data', confirmation);
-      return { statusCode: 200, body: 'OK - email manquant' };
-    }
-
-    // 2. Vérifier qu'un code n'a pas déjà été attribué à cet acheteur
-    //    (cas fréquent : confirm-payment.js, côté client, est souvent plus
-    //    rapide que cette notification IPN qui peut arriver avec un délai).
+  try {
+    // 2. Protection anti double-attribution (ex: webhook livré deux fois)
     const existing = await findExistingAssignedCode(buyerEmail);
     if (existing) {
-      console.log(`Code déjà attribué à ${buyerEmail} (${existing.fields.Code}), IPN ignoré.`);
+      console.log(`Code déjà attribué à ${buyerEmail} (${existing.fields.Code}), webhook ignoré.`);
       return { statusCode: 200, body: 'OK - déjà attribué' };
     }
 
@@ -352,16 +277,10 @@ exports.handler = async (event) => {
     await assignCode(codeRecord.id, buyerEmail);
     const activationCode = codeRecord.fields.Code;
 
-    // 5. Envoyer l'email avec le code (silencieux si RESEND_API_KEY absent)
+    // 5. Email avec le code + accusé de réception interne + facture
     await sendActivationEmail(buyerEmail, activationCode);
-
-    // 5bis. Accusé de réception interne à umar@leerukocc.com
     await sendInternalPurchaseNotice(buyerEmail, activationCode);
-
-    // 6. Envoyer la facture Leeru Kocc (distincte du reçu PayDunya)
-    const productKey = customData.product;
-    const paidAmount = confirmation.total_amount || confirmation.amount;
-    await sendInvoiceEmail(buyerEmail, activationCode, productKey, paidAmount);
+    await sendInvoiceEmail(buyerEmail, activationCode, productKey, body.amount);
 
     console.log(`Code ${activationCode} attribué à ${buyerEmail}`);
     return { statusCode: 200, body: 'OK' };
