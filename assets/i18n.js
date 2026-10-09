@@ -23,6 +23,7 @@
     nav_apprendreWolof: 'Learn Wolof',
     nav_cours: 'Wolof Courses',
     nav_consultance: 'Consulting &amp; Translation',
+    nav_decoder: 'Decode Senegal',
     nav_catalogue: 'Catalogue',
     nav_apropos: 'About',
     nav_galerie: 'Gallery',
@@ -295,7 +296,54 @@
       wex_activerIntro: 'The code is on the card inserted in your book. It only works once.',
       wex_labelCode: 'Access code',
       wex_btnActiver: 'Activate the app',
-      wex_acceptCgv: 'I accept the <a href="cgv.html" target="_blank" rel="noopener">Terms of Sale</a> and <a href="confidentialite.html" target="_blank" rel="noopener">Privacy Policy</a>, and acknowledge that access to the digital product is provided immediately after payment.',
+    },
+
+    decoderSenegal: {
+      dec_heroEyebrow: 'Leeru Kocc &times; Momentum &middot; Intercultural management workshop',
+      dec_h1: 'Decode Senegal',
+      dec_heroP: "Understand the invisible codes of management in Senegal to perform better as a team. A manager who doesn't get what he asked for. An employee who says \u201cyes\u201d and doesn't follow through. These aren't skill problems &mdash; they're cultural misunderstandings, and they're costly.",
+      dec_btnFormats: 'See formats and rates &rarr;',
+      dec_btnContact: 'Contact us',
+
+      dec_s1Label: 'The observation',
+      dec_s1Title: 'Cultural misunderstandings, not skill problems',
+      dec_s1P1: "Senegal attracts hundreds of foreign managers, executives and leaders every year. They arrive with their expertise, their methods, their frameworks &mdash; and run into dynamics they don't understand, often in silence: an employee avoiding eye contact during a review, a meeting where no one asks a question, a loyal team that never takes initiative.",
+      dec_s1P2: "What no one says clearly: the problem isn't one-sided. Senegalese employees, too, have things to say about what they don't understand in their Western managers. This mutual silence is at the heart of the most costly blockages.",
+      dec_s1Quote: '\u201cDecode Senegal\u201d gives managers and leaders the cultural keys they need to lead effectively, respectfully and sustainably in the Senegalese context.',
+
+      dec_s2Label: 'What sets it apart',
+      dec_s2Title: 'A double perspective, grounded in the field, with an immediate takeaway',
+      dec_step1Title: 'A double perspective',
+      dec_step1P: "The workshop doesn't just explain Senegalese culture to foreign managers. It also lets them hear what Senegalese employees don't understand about them. This reciprocity is what makes the workshop unique &mdash; and more honest.",
+      dec_step2Title: 'Grounded in the field',
+      dec_step2P: '70 invisible codes documented on the ground in Dakar, organized into 24 compared cultural dimensions. No abstract theory: real situations, tested against 4 role-play scenarios played out in the room.',
+      dec_step3Title: 'An immediate takeaway',
+      dec_step3P: 'Each participant leaves with an Intercultural Passport &mdash; including the 5 golden rules and a behavior translator &mdash; and a personal commitment to act, written down at the end of the session.',
+
+      dec_s3Label: 'Two perspectives, one shared conviction',
+      dec_s3Title: 'Co-led by two complementary practitioners',
+      dec_bio1P: 'Philosopher, linguist and expert in Senegalese cultures. Author of <em>Comprendre et Parler Wolof</em> and <em>Wolof Express</em>. Pedagogical director at Leeru Kocc, he teaches Wolof and French at the Institut Fran&ccedil;ais de Dakar and works with UNESCO, AFD and about a dozen embassies. He brings anthropological depth, on-the-ground cultural codes, and the ability to name what usually stays invisible.',
+      dec_bio2P: 'Expert in management and organizational development. She brings a managerial and HR lens, an international perspective on leadership practices, and grounding in the operational realities of companies working in Senegal. Her stance: neither indulgent nor prescriptive &mdash; clear-eyed about the friction, pragmatic about the solutions.',
+
+      dec_s4Label: 'Who is it for?',
+      dec_s4Title: 'Any organization working across cultures',
+      dec_s4P: 'Leadership teams of French, European or American companies based in Senegal, embassies and cooperation agencies, international organizations and NGOs, chambers of commerce, HR departments managing expatriate staff. It also speaks to Senegalese managers trained abroad &mdash; those who come back with effective tools and run into resistance they can\u2019t quite name.',
+
+      dec_s5Label: 'Three formats, one standard',
+      dec_s5Title: 'Formats and rates',
+      dec_f1Title: 'Discovery',
+      dec_f1P: 'Awareness-raising, 3 field cases, 5-pillar framework, passport. Ideal for a newly arrived leadership team.',
+      dec_f2Title: 'Workshop',
+      dec_f2P: 'Full program: 6 modules, 8 practical cases, mutual misunderstandings, role-play, 5 pillars, passport.',
+      dec_f3Title: 'Immersion',
+      dec_f3P: 'Workshop + on-site session at La galerie Le Man&egrave;ge + individual coaching at the end of the day.',
+
+      dec_s6Label: 'The venue',
+      dec_s6Title: 'La galerie Le Man&egrave;ge, Dakar',
+      dec_s6P: "This venue isn't a logistical choice &mdash; it's a pedagogical one. Its open architecture, light and cultural grounding create the conditions for speech, vulnerability and the shift in perspective this kind of work requires. The informal is structuring here. Workshops can also be held at the client's premises on request.",
+
+      dec_closing: "Managing in Senegal without the cultural codes is like flying without instruments. \u201cDecode Senegal\u201d doesn't turn managers into experts on Senegalese culture &mdash; it gives them the keys to ask the right questions, interpret what they see, and act differently. This isn't awareness-raising. It's a shift in posture.",
+      dec_btnContact2: 'Contact us &rarr;',
     },
   };
 
@@ -325,7 +373,7 @@
       }
     });
     const btn = document.getElementById('langToggle');
-    if (btn) btn.textContent = lang === 'fr' ? 'EN' : 'FR';
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
     document.documentElement.lang = lang;
   }
 
@@ -337,7 +385,7 @@
     btn.id = 'langToggle';
     btn.type = 'button';
     btn.setAttribute('aria-label', 'English / Français');
-    btn.style.cssText = 'order:2;margin-left:0.6rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.35);color:#FFF;border-radius:0.5rem;padding:0.35rem 0.7rem;font-family:"Lato",sans-serif;font-weight:700;font-size:0.78rem;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;';
+    btn.style.cssText = 'order:2;margin-left:0.6rem;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);color:#FFF;border-radius:0.5rem;padding:0.4rem 0.8rem;font-family:"Lato",sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;';
     btn.addEventListener('click', () => {
       lang = lang === 'fr' ? 'en' : 'fr';
       localStorage.setItem(STORAGE_KEY, lang);
