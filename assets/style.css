@@ -27,15 +27,6 @@ body{
   line-height:1.6;
 }
 
-/* Texte de paragraphe justifié (titres, boutons, nav restent inchangés car */
-/* leurs règles text-align:center/left propres s'appliquent après celle-ci) */
-p{
-  text-align:justify;
-  text-justify:inter-word;
-  -webkit-hyphens:auto;
-  hyphens:auto;
-}
-
 img{max-width:100%;display:block;}
 a{color:inherit;text-decoration:none;}
 
