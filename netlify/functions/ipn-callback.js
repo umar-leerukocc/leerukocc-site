@@ -74,7 +74,7 @@ async function sendActivationEmail(toEmail, code) {
         et entrez ce code avec votre e-mail.</p>
       <p style="font-size:0.9em; color:#777; margin-top:2rem;">
         Une question ? Écrivez-nous à
-        <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
+        <a href="mailto:contact@leerukocc.com" style="color:#A0895D;">contact@leerukocc.com</a>.
       </p>
     </div>
   `;
@@ -146,7 +146,7 @@ async function sendInvoiceEmail(toEmail, code, productKey, amount) {
       </p>
       <p style="font-size:0.8em; color:#999; margin-top:32px; border-top:1px solid #eee; padding-top:16px;">
         Une question sur cette facture ? Écrivez-nous à
-        <a href="mailto:leerukocc@gmail.com" style="color:#A0895D;">leerukocc@gmail.com</a>.
+        <a href="mailto:contact@leerukocc.com" style="color:#A0895D;">contact@leerukocc.com</a>.
       </p>
     </div>
   `;
@@ -181,7 +181,7 @@ async function sendStockAlert() {
       },
       body: JSON.stringify({
         from: 'Wolof Express <contact@leerukocc.com>',
-        to: 'leerukocc@gmail.com',
+        to: 'contact@leerukocc.com',
         subject: '⚠️ Stock de codes Wolof Express épuisé',
         html: '<p>Un client a payé, mais il ne reste plus aucun code "Non utilisé" dans Airtable. Merci de générer un nouveau lot de codes au plus vite.</p>',
       }),

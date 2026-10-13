@@ -99,15 +99,12 @@ exports.handler = async (event) => {
       };
     }
 
+    // Le détail technique reste dans les logs Netlify, jamais affiché au client.
     console.error('Erreur Bictorys create-invoice:', response.status, data);
     return {
       statusCode: 502,
       body: JSON.stringify({
-        // TEMPORAIRE (diagnostic) : affiche le détail renvoyé par Bictorys
-        // directement dans le message d'erreur, pour pouvoir le lire sans
-        // accès aux logs Netlify. À retirer une fois le problème résolu.
-        error: `Erreur Bictorys (HTTP ${response.status}): ${JSON.stringify(data)}`,
-        details: data,
+        error: 'Le paiement n\'a pas pu être initialisé. Réessayez dans un instant ou écrivez-nous à contact@leerukocc.com.',
       }),
     };
   } catch (err) {
