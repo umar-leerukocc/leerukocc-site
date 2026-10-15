@@ -311,6 +311,7 @@
       wex_bookLabel: 'The book',
       wex_bookSecTitle: 'Leaf through the book, now on pre-order',
       wex_bookSecP: "The app's companion: the cultural codes and descriptions that give meaning to every word. Ten themes, from greetings to teranga, through the market, getting around and time, plus a pocket glossary. Release planned for December 2026.",
+      wex_bookHint: 'Swipe to leaf through, tap a page to enlarge it',
       wex_bookOnlyTitle: 'The book',
       wex_bookOnlyP: 'The cultural codes and descriptions, to keep at hand or to give.',
       wex_preorderTag: 'Pre-order',
