@@ -41,7 +41,7 @@
 }
 </script>
 <style>
-  .offer-card{display:flex;flex-direction:column;gap:0.5rem;}
+  .offer-card{display:flex;flex-direction:column;gap:0.5rem;padding:1.6rem 1.5rem;}
   .offer-price{font-family:'Space Mono',monospace;font-weight:700;font-size:1.25rem;color:var(--brun);}
   .offer-card .btn{margin-top:auto;justify-content:center;}
   .pair-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:var(--brun);text-align:center;margin-top:1.8rem;}
@@ -77,7 +77,7 @@
   <div class="wrap">
     <div class="hero-eyebrow" data-i18n="wex_heroEyebrow">Appli audio + guide de poche · Leeru Kocc</div>
     <h1 data-i18n="wex_h1">Le wolof du quotidien,<br>dans votre poche.</h1>
-    <p data-i18n="wex_heroP">Une appli audio pour entendre et parler le wolof de tous les jours, phrase par phrase, prononcé par de vrais locuteurs. Et un livre pour en comprendre les codes. L'appli vous fait parler, le livre vous fait comprendre.</p>
+    <p data-i18n="wex_heroP">Une appli audio pour entendre et parler le wolof de tous les jours, phrase par phrase, prononcé par de vrais locuteurs. Et un livre pour en comprendre les codes. L'appli pour entendre, le livre pour comprendre.</p>
     <div class="hero-actions">
       <a href="#acheter" class="btn btn-primary" data-i18n="wex_btnAcheter">Acheter l'appli &rarr;</a>
       <a href="app/wolof-express-audio.html" class="btn btn-outline" data-i18n="wex_btnTryFree">Essayer gratuitement &rarr;</a>
@@ -88,21 +88,23 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label" data-i18n="wex_pairLabel">Deux compagnons, deux rôles</div>
-    <h2 class="section-title" data-i18n="wex_pairTitle">Parler et comprendre, ce n'est pas la même chose</h2>
+    <div class="section-label" data-i18n="wex_pairLabel">Deux compagnons, un seul mot : dégg</div>
+    <h2 class="section-title" data-i18n="wex_pairTitle">En wolof, on ne parle pas une langue : on l'entend</h2>
+    <p class="section-intro" data-i18n="wex_pairIntro">Là où le français demande « Tu parles wolof ? », le wolof demande « <em>Dégg nga wolof ?</em> », littéralement « Tu entends le wolof ? ». Entendre ses sons et comprendre ce qu'elle dit : c'est tout ce que contient <em>dégg</em>, et ce sont les deux faces de Wolof Express.</p>
     <div class="grid grid-2">
-      <div class="card">
+      <div class="card" style="padding:1.6rem 1.5rem;">
         <div class="book-meta" data-i18n="wex_appMeta">L'appli, la voix</div>
-        <h3 style="font-family:'Playfair Display',serif;margin:0.3rem 0 0.6rem;" data-i18n="wex_appTitle">Pour parler</h3>
+        <h3 style="font-family:'Playfair Display',serif;margin:0.3rem 0 0.6rem;" data-i18n="wex_appTitle">Pour entendre</h3>
         <p class="book-desc" data-i18n="wex_appP">Entendez chaque phrase prononcée par de vrais locuteurs, répétez-la, testez votre prononciation et suivez vos progrès, thème après thème. Elle fonctionne même sans connexion.</p>
       </div>
-      <div class="card">
+      <div class="card" style="padding:1.6rem 1.5rem;">
         <div class="book-meta" data-i18n="wex_bookMeta">Le livre, les codes</div>
         <h3 style="font-family:'Playfair Display',serif;margin:0.3rem 0 0.6rem;" data-i18n="wex_bookTitle">Pour comprendre</h3>
         <p class="book-desc" data-i18n="wex_bookP">Les descriptifs et les notes culturelles qui donnent du sens à chaque formule : pourquoi on prend le temps de saluer, comment négocier un prix sans vexer, ce que recouvre vraiment la téranga.</p>
       </div>
     </div>
-    <p class="pair-tagline" data-i18n="wex_pairTagline">Le livre dans la main pour comprendre, l'appli dans l'oreille pour parler.</p>
+    <p class="pair-tagline" data-i18n="wex_pairTagline">L'appli dans l'oreille pour entendre, le livre dans la main pour comprendre.</p>
+    <p class="pair-tagline" style="margin-top:0.6rem;font-size:1.3rem;font-weight:700;color:var(--terracotta, #B5542C);" data-i18n="wex_pairResult">Et bientôt, vous pourrez répondre : « <em>Dégg naa wolof !</em> » Je parle wolof !</p>
   </div>
 </section>
 
@@ -186,7 +188,7 @@
         <span class="btag" style="align-self:flex-start;position:static;" data-i18n="wex_bundleTag">Le duo complet</span>
         <h3 style="font-family:'Playfair Display',serif;margin:0;" data-i18n="wex_bundleTitle">Livre + Appli</h3>
         <div class="offer-price">10 900 FCFA <span style="font-size:0.75em;font-weight:400;text-decoration:line-through;color:var(--brun-clair);">12 500</span></div>
-        <p class="book-desc" data-i18n="wex_bundleP">Le livre pour comprendre et l'appli pour parler. Votre code d'activation vous sera remis avec le livre, à sa sortie.</p>
+        <p class="book-desc" data-i18n="wex_bundleP">Le livre pour comprendre et l'appli pour entendre. Votre code d'activation vous sera remis avec le livre, à sa sortie.</p>
         <a class="btn btn-terracotta" target="_blank" rel="noopener" href="https://wa.me/221771532198?text=Bonjour%2C%20je%20souhaite%20pr%C3%A9commander%20le%20pack%20Livre%20%2B%20Appli%20Wolof%20Express%20(10%20900%20FCFA)%20et%20%C3%AAtre%20pr%C3%A9venu(e)%20de%20sa%20sortie." data-i18n="wex_btnOrderBundle">Précommander sur WhatsApp</a>
       </div>
     </div>
