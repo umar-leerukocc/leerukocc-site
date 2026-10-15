@@ -271,76 +271,123 @@
     },
 
     wolofExpress: {
-      wex_heroEyebrow: 'Pocket guide · Leeru Kocc Edition',
-      wex_h1: "Your book talks.<br>Listen to it.",
-      wex_heroP: "Wolof Express is a pocket guide paired with an exclusive audio app: every phrase, every dialogue in the book, pronounced for you. Reserved for book buyers.",
-      wex_btnAcheter: 'Buy access →',
+      wex_heroEyebrow: 'Audio app + pocket guide · Leeru Kocc',
+      wex_h1: 'Everyday Wolof,<br>in your pocket.',
+      wex_heroP: "An audio app to hear and speak everyday Wolof, phrase by phrase, pronounced by native speakers. And a book to understand its codes. The app gets you speaking, the book helps you understand.",
+      wex_btnAcheter: 'Buy the app &rarr;',
+      wex_btnTryFree: 'Try for free &rarr;',
       wex_btnHaveCode: 'I already have a code',
-      wex_btnTryFree: 'Try for free →',
+      wex_pairLabel: 'Two companions, two roles',
+      wex_pairTitle: "Speaking and understanding aren't the same thing",
+      wex_appMeta: 'The app, the voice',
+      wex_appTitle: 'To speak',
+      wex_appP: 'Hear every phrase pronounced by native speakers, repeat it, test your pronunciation and track your progress, theme by theme. It even works offline.',
+      wex_bookMeta: 'The book, the codes',
+      wex_bookTitle: 'To understand',
+      wex_bookP: 'The descriptions and cultural notes that give meaning to every expression: why people take time to greet each other, how to haggle without offending, what teranga really means.',
+      wex_pairTagline: 'The book in your hand to understand, the app in your ear to speak.',
       wex_stepsLabel: 'How it works',
       wex_stepsTitle: 'Three steps, once and for all',
-      wex_step1Title: 'Find your code',
-      wex_step1P: 'On the card inserted in your copy of the book.',
-      wex_step2Title: 'Activate it here',
-      wex_step2P: 'Enter your code and email in the form below.',
-      wex_step3Title: 'Listen to the book',
-      wex_step3P: 'An access link to the audio app is sent to you, valid permanently for this copy.',
+      wex_step1Title: 'Choose your option',
+      wex_step1P: 'App only or Duo Pack, paid online by Mobile Money (Wave, Orange Money) or bank card.',
+      wex_step2Title: 'Get your code',
+      wex_step2P: "It appears on screen right after payment and is also sent to you by email.",
+      wex_step3Title: 'Activate and listen',
+      wex_step3P: 'Enter your code and email below: access to the app is permanent, and your progress is saved.',
       wex_buyLabel: 'Buy online',
-      wex_buyTitle: "Don't have your code yet?",
-      wex_buyIntro: 'Buy your access directly online, by card or mobile money. Your activation code will be provided immediately after payment.',
+      wex_buyTitle: 'Choose your option',
+      wex_buyIntro: 'Your activation code is provided immediately after payment.',
       wex_labelEmail: 'Your email',
-      wex_btnAppOnly: 'App only, 5,900 FCFA',
-      wex_btnBookApp: 'Book + App, 9,900 FCFA',
+      wex_acceptCgv: 'I accept the <a href="cgv.html" target="_blank" rel="noopener">Terms of Sale</a> and the <a href="confidentialite.html" target="_blank" rel="noopener">Privacy Policy</a>, and I acknowledge that access to the digital product is provided immediately after payment.',
+      wex_offerAppTitle: 'App only',
+      wex_offerAppP: 'Hear and speak everyday Wolof, phrase by phrase. Permanent access.',
+      wex_btnAppOnly: 'Buy the app',
+      wex_offerDuoTag: 'To give',
+      wex_offerDuoTitle: 'Duo Pack',
+      wex_offerDuoP: 'Two app access codes: one for you, one to give. Ideal for a couple, a family settling in, or a gift.',
+      wex_btnDuo: 'Buy the Duo Pack',
+      wex_bookLabel: 'The book',
+      wex_bookSecTitle: 'Leaf through the book, now on pre-order',
+      wex_bookSecP: "The app's companion: the cultural codes and descriptions that give meaning to every word. Ten themes, from greetings to teranga, through the market, getting around and time, plus a pocket glossary. Release planned for December 2026.",
+      wex_bookOnlyTitle: 'The book',
+      wex_bookOnlyP: 'The cultural codes and descriptions, to keep at hand or to give.',
+      wex_preorderTag: 'Pre-order',
+      wex_btnOrderBook: 'Pre-order on WhatsApp',
+      wex_bundleTag: 'The complete duo',
+      wex_bundleTitle: 'Book + App',
+      wex_bundleP: 'The book to understand and the app to speak. Your activation code will be handed to you with the book, on release.',
+      wex_btnOrderBundle: 'Pre-order on WhatsApp',
+      wex_preorderNote: 'No payment at this stage: we will contact you as soon as the book is released to confirm your order. Want to start right away? <a href="#acheter">The app is available now.</a>',
+      wex_orderMailNote: 'Prefer email? Write to <a href="mailto:contact@leerukocc.com?subject=Pr%C3%A9commande%20Wolof%20Express">contact@leerukocc.com</a> stating your choice.',
       wex_activerLabel: 'Activation',
       wex_activerTitle: 'Unlock your audio app',
-      wex_activerIntro: 'The code is on the card inserted in your book. It only works once.',
+      wex_activerIntro: "Your code was sent to you by email after purchase. It is activated once, with your email. Changing device? Enter the same code and email: a confirmation code will be sent to you, and your progress will be restored.",
       wex_labelCode: 'Access code',
+      wex_labelOtp: 'Confirmation code received by email',
       wex_btnActiver: 'Activate the app',
     },
 
     decoderSenegal: {
-      dec_heroEyebrow: 'Leeru Kocc &times; Momentum &middot; Intercultural management workshop',
+      dec_heroEyebrow: 'Leeru Kocc &times; Momentum &middot; Intercultural management training',
       dec_h1: 'Decode Senegal',
-      dec_heroP: "Understand the invisible codes of management in Senegal to perform better as a team. A manager who doesn't get what he asked for. An employee who says \u201cyes\u201d and doesn't follow through. These aren't skill problems, they're cultural misunderstandings, and they're costly.",
-      dec_btnFormats: 'See formats and rates &rarr;',
+      dec_heroP: "The workshop that gives your managers the cultural keys to effectively lead a Senegalese team, in half a day. No abstract theory: real cases, role-play, and tools your teams use starting the next day.",
+      dec_btnFormats: 'Discover the workshop &rarr;',
       dec_btnContact: 'Contact us',
+
+      dec_factFormatLabel: 'Format',
+      dec_factFormat: 'In-person, interactive workshop (field cases + role-play)',
+      dec_factDureeLabel: 'Duration',
+      dec_factDuree: 'From 2 hours to a full day, depending on your needs',
+      dec_factLieuLabel: 'Venue',
+      dec_factLieu: 'To be defined together based on your needs',
+      dec_factPublicLabel: 'Audience',
+      dec_factPublic: 'Managers and executives working in Senegal',
 
       dec_s1Label: 'The observation',
       dec_s1Title: 'Cultural misunderstandings, not skill problems',
-      dec_s1P1: "Senegal attracts hundreds of foreign managers, executives and leaders every year. They arrive with their expertise, their methods, their frameworks, and run into dynamics they don't understand, often in silence: an employee avoiding eye contact during a review, a meeting where no one asks a question, a loyal team that never takes initiative.",
-      dec_s1P2: "What no one says clearly: the problem isn't one-sided. Senegalese employees, too, have things to say about what they don't understand in their Western managers. This mutual silence is at the heart of the most costly blockages.",
-      dec_s1Quote: '\u201cDecode Senegal\u201d gives managers and leaders the cultural keys they need to lead effectively, respectfully and sustainably in the Senegalese context.',
+      dec_s1P1: "A manager who doesn't get what he asked for. An employee who says \u201cyes\u201d and doesn't follow through. A loyal team that never takes initiative. These aren't skill problems: they're cultural misunderstandings, and they cost time, trust and performance.",
+      dec_s1P2: "What no one says clearly: the problem isn't one-sided. Senegalese employees, too, have things to say about what they don't understand in their Western managers. This mutual silence is at the heart of the most costly blockages, and it's exactly what the workshop sets out to untangle.",
 
-      dec_s2Label: 'What sets it apart',
-      dec_s2Title: 'A double perspective, grounded in the field, with an immediate takeaway',
-      dec_step1Title: 'A double perspective',
-      dec_step1P: "The workshop doesn't just explain Senegalese culture to foreign managers. It also lets them hear what Senegalese employees don't understand about them. This reciprocity is what makes the workshop unique, and more honest.",
-      dec_step2Title: 'Grounded in the field',
-      dec_step2P: '70 invisible codes documented on the ground in Dakar, organized into 24 compared cultural dimensions. No abstract theory: real situations, tested against 4 role-play scenarios played out in the room.',
-      dec_step3Title: 'An immediate takeaway',
-      dec_step3P: 'Each participant leaves with an Intercultural Passport, including the 5 golden rules and a behavior translator, and a personal commitment to act, written down at the end of the session.',
+      dec_s2Label: 'What you walk away with',
+      dec_s2Title: 'Tools to use starting the next day, not just awareness',
+      dec_take1Title: 'You understand what\u2019s really blocking things',
+      dec_take1P: "Why your instructions aren't followed as expected, why your meetings stay silent: you identify the precise cultural codes at play, not a vague explanation.",
+      dec_take2Title: 'A personal Intercultural Passport',
+      dec_take2P: 'The 5 golden rules and a behavior translator, in a format you keep and refer back to after the workshop.',
+      dec_take3Title: 'Reflexes tested in the room',
+      dec_take3P: '4 scenarios played out through role-play, so new behaviors are practiced, not just understood intellectually.',
+      dec_take4Title: 'A concrete commitment, not an intention',
+      dec_take4P: 'You leave with a personal commitment to change, written down at the end of the session, not just awareness that fades within a week.',
+
+      dec_s2bLabel: 'How the workshop unfolds',
+      dec_s2bTitle: 'Four stages, from lived cases to a personal commitment',
+      dec_proc1Title: '1. Field cases',
+      dec_proc1P: 'We start from real situations experienced by managers in Senegal: 70 cultural codes documented on the ground in Dakar, organized into 24 compared dimensions.',
+      dec_proc2Title: '2. A two-way reading',
+      dec_proc2P: 'For each case, you discover both your own blind spot as a foreign manager and what your Senegalese colleagues don\u2019t understand about you. Both directions, not just one.',
+      dec_proc3Title: '3. Role-play',
+      dec_proc3P: '4 scenarios played out in the room to anchor new reflexes in practice, not just in theory.',
+      dec_proc4Title: '4. Passport &amp; commitment',
+      dec_proc4P: 'You leave with the 5 golden rules, the behavior translator, and a personal commitment to act, written down at the end of the session.',
 
       dec_s3Label: 'Two perspectives, one shared conviction',
       dec_s3Title: 'Co-led by two complementary practitioners',
-      dec_bio1P: 'Philosopher, linguist and expert in Senegalese cultures. Author of <em>Comprendre et Parler Wolof</em> and <em>Wolof Express</em>. Pedagogical director at Leeru Kocc, he teaches Wolof and French at the Institut Fran&ccedil;ais de Dakar and works with UNESCO, AFD and about a dozen embassies. He brings anthropological depth, on-the-ground cultural codes, and the ability to name what usually stays invisible.',
+      dec_bio1P: 'Philosopher, linguist and expert in Senegalese cultures. Author of <em>Comprendre et Parler Wolof</em> and <em>Wolof Express</em>. Pedagogical director at Leeru Kocc, he teaches Wolof and French at the Institut Fran&ccedil;ais de Dakar. His background includes assignments with UNESCO, AFD and several embassies. He brings anthropological depth, on-the-ground cultural codes, and the ability to name what usually stays invisible.',
       dec_bio2P: 'Expert in management and organizational development. She brings a managerial and HR lens, an international perspective on leadership practices, and grounding in the operational realities of companies working in Senegal. Her stance: neither indulgent nor prescriptive, clear-eyed about the friction, pragmatic about the solutions.',
 
       dec_s4Label: 'Who is it for?',
-      dec_s4Title: 'Any organization working across cultures',
-      dec_s4P: 'Leadership teams of French, European or American companies based in Senegal, embassies and cooperation agencies, international organizations and NGOs, chambers of commerce, HR departments managing expatriate staff. It also speaks to Senegalese managers trained abroad, those who come back with effective tools and run into resistance they can\u2019t quite name.',
-
-      dec_s5Label: 'Three formats, one standard',
-      dec_s5Title: 'Formats and rates',
-      dec_f1Title: 'Discovery',
-      dec_f1P: 'Awareness-raising, 3 field cases, 5-pillar framework, passport. Ideal for a newly arrived leadership team.',
-      dec_f2Title: 'Workshop',
-      dec_f2P: 'Full program: 6 modules, 8 practical cases, mutual misunderstandings, role-play, 5 pillars, passport.',
-      dec_f3Title: 'Immersion',
-      dec_f3P: 'Workshop + on-site session at La galerie Le Man&egrave;ge + individual coaching at the end of the day.',
+      dec_s4Title: 'Any organization facing Senegalese cultural codes',
+      dec_s4P: "The work always centers on the same axis: the Senegalese context. This isn't a general intercultural mediation workshop between any two cultures, but it works both ways around that axis.",
+      dec_s4aTitle: 'Foreign managers and executives',
+      dec_s4aP: "Whatever your own nationality, French, European, American or otherwise, if you manage a Senegalese team, the workshop gives you the keys to read what's really going on in your exchanges with them.",
+      dec_s4bTitle: 'Senegalese managers and teams',
+      dec_s4bP: "If you work with a manager or colleagues from another culture, the workshop also helps you understand their own codes, and name what isn't always clear to you about them either.",
+      dec_s4P2: 'Concretely: leadership teams of companies based in Senegal, embassies and cooperation agencies, international organizations and NGOs, chambers of commerce, HR departments managing expatriate staff, and Senegalese managers trained abroad who come back with effective tools and run into resistance they can\u2019t quite name.',
+      dec_btnDevis: 'Request a quote &rarr;',
 
       dec_s6Label: 'The venue',
-      dec_s6Title: 'La galerie Le Man&egrave;ge, Dakar',
-      dec_s6P: "This venue isn't a logistical choice, it's a pedagogical one. Its open architecture, light and cultural grounding create the conditions for speech, vulnerability and the shift in perspective this kind of work requires. The informal is structuring here. Workshops can also be held at the client's premises on request.",
+      dec_s6Title: 'A setting chosen together, not imposed',
+      dec_s6P: "The venue isn't a logistical detail, it's a pedagogical choice: it needs to create the conditions for speech, vulnerability and the shift in perspective this kind of work requires. The workshop can be held at your own premises or at a cultural venue in Dakar such as La galerie Le Man&egrave;ge, depending on what suits your team best. We discuss it together when you request a quote.",
 
       dec_closing: "Managing in Senegal without the cultural codes is like flying without instruments. \u201cDecode Senegal\u201d doesn't turn managers into experts on Senegalese culture, it gives them the keys to ask the right questions, interpret what they see, and act differently. This isn't awareness-raising. It's a shift in posture.",
       dec_btnContact2: 'Contact us &rarr;',
@@ -373,7 +420,14 @@
       }
     });
     const btn = document.getElementById('langToggle');
-    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    // Drapeaux dessinés en SVG : les emojis de drapeaux ne s'affichent pas sous Windows
+    // (Windows montre les lettres « GB » / « FR » à la place).
+    const FLAG_UK = '<svg viewBox="0 0 60 30" width="20" height="10" aria-hidden="true" style="vertical-align:-1px;border-radius:2px;margin-right:6px;"><clipPath id="lkUkClip"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#lkUkClip)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>';
+    const FLAG_FR = '<svg viewBox="0 0 3 2" width="18" height="12" aria-hidden="true" style="vertical-align:-1px;border-radius:2px;margin-right:6px;"><rect width="1" height="2" x="0" fill="#002395"/><rect width="1" height="2" x="1" fill="#fff"/><rect width="1" height="2" x="2" fill="#ED2939"/></svg>';
+    if (btn) {
+      btn.innerHTML = lang === 'fr' ? FLAG_UK + 'EN' : FLAG_FR + 'FR';
+      btn.setAttribute('aria-label', lang === 'fr' ? 'Switch to English' : 'Passer en français');
+    }
     document.documentElement.lang = lang;
   }
 
@@ -385,7 +439,7 @@
     btn.id = 'langToggle';
     btn.type = 'button';
     btn.setAttribute('aria-label', 'English / Français');
-    btn.style.cssText = 'order:2;margin-left:0.6rem;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);color:#FFF;border-radius:0.5rem;padding:0.4rem 0.8rem;font-family:"Lato",sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;';
+    btn.style.cssText = 'order:2;display:inline-flex;align-items:center;margin-left:0.6rem;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);color:#FFF;border-radius:0.5rem;padding:0.4rem 0.8rem;font-family:"Lato",sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;';
     btn.addEventListener('click', () => {
       lang = lang === 'fr' ? 'en' : 'fr';
       localStorage.setItem(STORAGE_KEY, lang);
