@@ -3,18 +3,18 @@
 // Crée un paiement Bictorys (Checkout) et renvoie l'URL de paiement au
 // client. Appelée depuis wolof-express.html quand le client clique "Acheter".
 //
-// Attend un POST avec un body JSON : { "email": "...", "product": "app_only" | "book_app" }
+// Attend un POST avec un body JSON : { "email": "...", "product": "app_only" | "duo" }
 
 const SITE_URL = 'https://leerukocc.com';
 
 // Catalogue des produits vendus. Ajuste les prix ici si besoin.
 const PRODUCTS = {
   app_only: {
-    label: 'Wolof Express — Accès application',
+    label: 'Wolof Express, accès application',
     amount: 5900,
   },
-  book_app: {
-    label: 'Wolof Express — Livre + Application',
+  duo: {
+    label: 'Wolof Express, Pack Duo (2 accès application)',
     amount: 9900,
   },
 };
