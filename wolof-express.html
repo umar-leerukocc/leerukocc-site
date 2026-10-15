@@ -45,11 +45,24 @@
   .offer-price{font-family:'Space Mono',monospace;font-weight:700;font-size:1.25rem;color:var(--brun);}
   .offer-card .btn{margin-top:auto;justify-content:center;}
   .pair-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:var(--brun);text-align:center;margin-top:1.8rem;}
-  .book-preview{display:flex;gap:0.8rem;flex-wrap:wrap;margin:1.2rem 0;}
-  .book-preview img{height:190px;width:auto;border-radius:0.5rem;box-shadow:0 4px 14px rgba(58,42,24,0.18);cursor:zoom-in;object-fit:cover;}
-  .lightbox{display:none;position:fixed;inset:0;background:rgba(31,20,10,0.85);z-index:10000;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out;}
-  .lightbox img{max-width:100%;max-height:90vh;border-radius:0.5rem;}
-  @media(max-width:600px){.book-preview img{height:150px;}}
+  .bp-carousel{position:relative;margin:1.4rem 0 0.4rem;}
+  .bp-track{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0.6rem 0.2rem 1rem;}
+  .bp-track::-webkit-scrollbar{display:none;}
+  .bp-slide{flex:0 0 auto;height:420px;width:auto;scroll-snap-align:center;border-radius:0.6rem;box-shadow:0 6px 18px rgba(58,42,24,0.2);cursor:zoom-in;background:#fff;}
+  .bp-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(31,20,10,0.75);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;}
+  .bp-nav:disabled{opacity:0.25;cursor:default;}
+  .bp-prev{left:-6px;} .bp-next{right:-6px;}
+  .bp-dots{display:flex;justify-content:center;gap:0.5rem;margin-bottom:0.4rem;}
+  .bp-dots button{width:9px;height:9px;border-radius:50%;border:none;padding:0;background:#d9cbb3;cursor:pointer;}
+  .bp-dots button.active{background:var(--brun);width:22px;border-radius:5px;}
+  .bp-hint{text-align:center;font-size:0.8rem;color:var(--brun-clair);margin-bottom:1rem;}
+  .lightbox{display:none;position:fixed;inset:0;background:rgba(31,20,10,0.92);z-index:10000;align-items:center;justify-content:center;padding:1rem;}
+  .lightbox img{max-width:100%;max-height:86vh;border-radius:0.5rem;touch-action:pan-y;}
+  .lb-btn{position:absolute;background:rgba(255,255,255,0.28);color:#fff;border:none;border-radius:50%;width:46px;height:46px;font-size:1.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .lb-prev{left:0.6rem;top:50%;transform:translateY(-50%);} .lb-next{right:0.6rem;top:50%;transform:translateY(-50%);}
+  .lb-close{top:0.8rem;right:0.8rem;font-size:1.3rem;}
+  .lb-count{position:absolute;bottom:1rem;left:0;right:0;text-align:center;color:#fff;font-size:0.85rem;font-family:'Space Mono',monospace;}
+  @media(max-width:600px){.bp-slide{height:360px;} .bp-nav{display:none;}}
 </style>
 </head>
 <body data-page="wolofExpress">
@@ -170,12 +183,18 @@
     <div class="section-label" data-i18n="wex_bookLabel">Le livre</div>
     <h2 class="section-title" data-i18n="wex_bookSecTitle">Feuilletez le livre, en précommande</h2>
     <p class="section-intro" data-i18n="wex_bookSecP">Le compagnon de l'appli : les codes culturels et les descriptifs qui donnent du sens à chaque mot. Dix thèmes, du salut à la téranga, en passant par le marché, les déplacements et le temps, et un lexique de poche. Sortie prévue pour décembre 2026.</p>
-    <div class="book-preview" id="bookPreview">
-      <img src="assets/img/livre-wolof-express.jpg" alt="Couverture du livre Wolof Express" onerror="this.remove()">
-      <img src="assets/livre-apercu-1.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
-      <img src="assets/livre-apercu-2.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
-      <img src="assets/livre-apercu-3.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
+    <div class="bp-carousel">
+      <button type="button" class="bp-nav bp-prev" id="bpPrev" aria-label="Page précédente">&#8249;</button>
+      <div class="bp-track" id="bookPreview">
+        <img class="bp-slide" src="assets/img/livre-wolof-express.jpg" alt="Couverture du livre Wolof Express" onerror="this.remove()">
+        <img class="bp-slide" src="assets/livre-apercu-1.jpg" alt="Page du livre Wolof Express : introduction" onerror="this.remove()">
+        <img class="bp-slide" src="assets/livre-apercu-2.jpg" alt="Page du livre Wolof Express : être poli" onerror="this.remove()">
+        <img class="bp-slide" src="assets/livre-apercu-3.jpg" alt="Page du livre Wolof Express : manger et boire" onerror="this.remove()">
+      </div>
+      <button type="button" class="bp-nav bp-next" id="bpNext" aria-label="Page suivante">&#8250;</button>
     </div>
+    <div class="bp-dots" id="bpDots"></div>
+    <p class="bp-hint" data-i18n="wex_bookHint">Faites glisser pour feuilleter, touchez une page pour l'agrandir</p>
     <div class="grid grid-2" style="gap:1.2rem;margin-top:0.5rem;">
       <div class="card offer-card">
         <span class="btag" style="align-self:flex-start;position:static;" data-i18n="wex_preorderTag">Précommande</span>
@@ -197,7 +216,13 @@
   </div>
 </section>
 
-<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button type="button" class="lb-btn lb-close" id="lbClose" aria-label="Fermer">&#10005;</button>
+  <button type="button" class="lb-btn lb-prev" id="lbPrev" aria-label="Page précédente">&#8249;</button>
+  <img id="lightboxImg" alt="">
+  <button type="button" class="lb-btn lb-next" id="lbNext" aria-label="Page suivante">&#8250;</button>
+  <div class="lb-count" id="lbCount"></div>
+</div>
 
 <div id="confirmOverlay" style="display:none;position:fixed;inset:0;background:rgba(31,20,10,0.65);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
   <div class="form-card" style="max-width:440px;width:100%;text-align:center;">
@@ -272,14 +297,74 @@
 function isEn(){ return window.leerukoccLang && window.leerukoccLang() === 'en'; }
 function T(key, fallback){ return (window.leerukoccT && window.leerukoccT(key)) || fallback; }
 
-// ---------- Aperçu du livre : agrandissement au toucher ----------
+// ---------- Aperçu du livre : carrousel + agrandissement ----------
 (function(){
+  const track = document.getElementById('bookPreview');
+  const prev = document.getElementById('bpPrev'), next = document.getElementById('bpNext');
+  const dots = document.getElementById('bpDots');
   const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightboxImg');
-  document.getElementById('bookPreview').addEventListener('click', function(e){
-    if (e.target.tagName !== 'IMG') return;
-    lbImg.src = e.target.src; lbImg.alt = e.target.alt; lb.style.display = 'flex';
+  const lbCount = document.getElementById('lbCount');
+  let current = 0, lbIndex = 0;
+  const slides = () => Array.from(track.querySelectorAll('.bp-slide'));
+
+  function buildDots(){
+    dots.innerHTML = '';
+    slides().forEach((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-label', 'Page ' + (i + 1));
+      b.addEventListener('click', () => goTo(i));
+      dots.appendChild(b);
+    });
+    update();
+  }
+  function goTo(i){
+    const s = slides(); if (!s.length) return;
+    i = Math.max(0, Math.min(i, s.length - 1));
+    track.scrollTo({ left: s[i].offsetLeft - (track.clientWidth - s[i].clientWidth) / 2, behavior: 'smooth' });
+  }
+  function update(){
+    const s = slides(); if (!s.length) return;
+    const center = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, dist = Infinity;
+    s.forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.clientWidth / 2 - center); if (d < dist){ dist = d; best = i; } });
+    current = best;
+    Array.from(dots.children).forEach((d, i) => d.classList.toggle('active', i === current));
+    prev.disabled = current === 0; next.disabled = current === s.length - 1;
+  }
+  prev.addEventListener('click', () => goTo(current - 1));
+  next.addEventListener('click', () => goTo(current + 1));
+  let t; track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(update, 60); });
+
+  // Agrandissement avec navigation (flèches, glisser, clavier)
+  function showLb(i){
+    const s = slides(); if (!s.length) return;
+    lbIndex = (i + s.length) % s.length;
+    lbImg.src = s[lbIndex].src; lbImg.alt = s[lbIndex].alt;
+    lbCount.textContent = (lbIndex + 1) + ' / ' + s.length;
+    lb.style.display = 'flex';
+  }
+  function closeLb(){ lb.style.display = 'none'; goTo(lbIndex); }
+  track.addEventListener('click', e => { if (e.target.classList.contains('bp-slide')) showLb(slides().indexOf(e.target)); });
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); showLb(lbIndex - 1); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); showLb(lbIndex + 1); });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  let x0 = null;
+  lb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) showLb(lbIndex + (dx < 0 ? 1 : -1));
   });
-  lb.addEventListener('click', function(){ lb.style.display = 'none'; });
+  document.addEventListener('keydown', e => {
+    if (lb.style.display !== 'flex') return;
+    if (e.key === 'ArrowRight') showLb(lbIndex + 1);
+    else if (e.key === 'ArrowLeft') showLb(lbIndex - 1);
+    else if (e.key === 'Escape') closeLb();
+  });
+
+  // Les points sont construits une fois les images chargées (une image absente est retirée)
+  window.addEventListener('load', buildDots);
 })();
 
 // ---------- Activation (avec confirmation par e-mail sur un nouvel appareil) ----------
