@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wolof Express : Activez votre appli audio</title>
-<meta name="description" content="Activez l'appli audio Wolof Express avec le code inséré dans votre exemplaire du livre.">
+<title>Wolof Express : l'appli audio pour parler le wolof du quotidien | Leeru Kocc</title>
+<meta name="description" content="Wolof Express : une appli audio pour entendre et parler le wolof du quotidien, phrase par phrase, et un livre pour en comprendre les codes culturels. Essai gratuit, accès définitif dès 5 900 FCFA.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lato:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -13,15 +13,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Leeru Kocc">
-<meta property="og:title" content="Wolof Express : Un livre qui vous parle !">
-<meta property="og:description" content="Wolof Express est un guide de poche accompagné d'une appli audio exclusive : chaque phrase, chaque dialogue du livre, prononcé pour vous.">
+<meta property="og:title" content="Wolof Express : le wolof du quotidien, dans votre poche">
+<meta property="og:description" content="L'appli vous fait parler, le livre vous fait comprendre. Entendez et parlez le wolof du quotidien, phrase par phrase.">
 <meta property="og:image" content="https://leerukocc.com/assets/img/og-image-wolof-express.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://leerukocc.com/wolof-express.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Wolof Express : Un livre qui vous parle !">
-<meta name="twitter:description" content="Wolof Express est un guide de poche accompagné d'une appli audio exclusive : chaque phrase, chaque dialogue du livre, prononcé pour vous.">
+<meta name="twitter:title" content="Wolof Express : le wolof du quotidien, dans votre poche">
+<meta name="twitter:description" content="L'appli vous fait parler, le livre vous fait comprendre. Entendez et parlez le wolof du quotidien, phrase par phrase.">
 <meta name="twitter:image" content="https://leerukocc.com/assets/img/og-image-wolof-express.jpg">
 <link rel="canonical" href="https://leerukocc.com/wolof-express.html">
 <script type="application/ld+json">
@@ -29,32 +29,28 @@
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Wolof Express",
-  "description": "Guide de poche des expressions essentielles du wolof, accompagné d'une application audio exclusive : chaque phrase du livre, prononcée pour vous.",
+  "description": "Appli audio pour entendre et parler le wolof du quotidien, et guide de poche des codes culturels sénégalais.",
   "image": "https://leerukocc.com/assets/img/og-image-wolof-express.jpg",
-  "brand": {
-    "@type": "Brand",
-    "name": "Leeru Kocc"
-  },
+  "brand": { "@type": "Brand", "name": "Leeru Kocc" },
   "offers": [
-    {
-      "@type": "Offer",
-      "name": "Accès application seule",
-      "price": "5900",
-      "priceCurrency": "XOF",
-      "availability": "https://schema.org/InStock",
-      "url": "https://leerukocc.com/wolof-express.html#acheter"
-    },
-    {
-      "@type": "Offer",
-      "name": "Livre + Application",
-      "price": "9900",
-      "priceCurrency": "XOF",
-      "availability": "https://schema.org/InStock",
-      "url": "https://leerukocc.com/wolof-express.html#acheter"
-    }
+    { "@type": "Offer", "name": "Appli seule", "price": "5900", "priceCurrency": "XOF", "availability": "https://schema.org/InStock", "url": "https://leerukocc.com/wolof-express.html#acheter" },
+    { "@type": "Offer", "name": "Pack Duo (2 accès appli)", "price": "9900", "priceCurrency": "XOF", "availability": "https://schema.org/InStock", "url": "https://leerukocc.com/wolof-express.html#acheter" },
+    { "@type": "Offer", "name": "Livre Wolof Express", "price": "6600", "priceCurrency": "XOF", "availability": "https://schema.org/PreOrder", "url": "https://leerukocc.com/wolof-express.html#livre" },
+    { "@type": "Offer", "name": "Livre + Appli", "price": "10900", "priceCurrency": "XOF", "availability": "https://schema.org/PreOrder", "url": "https://leerukocc.com/wolof-express.html#livre" }
   ]
 }
 </script>
+<style>
+  .offer-card{display:flex;flex-direction:column;gap:0.5rem;}
+  .offer-price{font-family:'Space Mono',monospace;font-weight:700;font-size:1.25rem;color:var(--brun);}
+  .offer-card .btn{margin-top:auto;justify-content:center;}
+  .pair-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:var(--brun);text-align:center;margin-top:1.8rem;}
+  .book-preview{display:flex;gap:0.8rem;flex-wrap:wrap;margin:1.2rem 0;}
+  .book-preview img{height:190px;width:auto;border-radius:0.5rem;box-shadow:0 4px 14px rgba(58,42,24,0.18);cursor:zoom-in;object-fit:cover;}
+  .lightbox{display:none;position:fixed;inset:0;background:rgba(31,20,10,0.85);z-index:10000;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out;}
+  .lightbox img{max-width:100%;max-height:90vh;border-radius:0.5rem;}
+  @media(max-width:600px){.book-preview img{height:150px;}}
+</style>
 </head>
 <body data-page="wolofExpress">
 
@@ -64,6 +60,7 @@
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" data-i18n="nav_accueil">Accueil</a></li>
+      <li><a href="apprendre-le-wolof.html" data-i18n="nav_apprendreWolof">Apprendre le wolof</a></li>
       <li><a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a></li>
       <li><a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a></li>
       <li><a href="decoder-le-senegal.html" data-i18n="nav_decoder">Décoder le Sénégal</a></li>
@@ -78,33 +75,53 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow" data-i18n="wex_heroEyebrow">Guide de poche · Édition Leeru Kocc</div>
-    <h1 data-i18n="wex_h1">Votre livre parle.<br>Écoutez-le.</h1>
-    <p data-i18n="wex_heroP">Wolof Express est un guide de poche accompagné d'une appli audio exclusive : chaque phrase, chaque dialogue du livre, prononcé pour vous. Réservée aux acheteurs du livre.</p>
+    <div class="hero-eyebrow" data-i18n="wex_heroEyebrow">Appli audio + guide de poche · Leeru Kocc</div>
+    <h1 data-i18n="wex_h1">Le wolof du quotidien,<br>dans votre poche.</h1>
+    <p data-i18n="wex_heroP">Une appli audio pour entendre et parler le wolof de tous les jours, phrase par phrase, prononcé par de vrais locuteurs. Et un livre pour en comprendre les codes. L'appli vous fait parler, le livre vous fait comprendre.</p>
     <div class="hero-actions">
-      <a href="#acheter" class="btn btn-primary" data-i18n="wex_btnAcheter">Acheter l'accès →</a>
+      <a href="#acheter" class="btn btn-primary" data-i18n="wex_btnAcheter">Acheter l'appli &rarr;</a>
+      <a href="app/wolof-express-audio.html" class="btn btn-outline" data-i18n="wex_btnTryFree">Essayer gratuitement &rarr;</a>
       <a href="#activer" class="btn btn-outline" data-i18n="wex_btnHaveCode">J'ai déjà un code</a>
-      <a href="app/wolof-express-audio.html" class="btn btn-outline" data-i18n="wex_btnTryFree">Essayer gratuitement →</a>
     </div>
   </div>
 </header>
 
 <section>
+  <div class="wrap">
+    <div class="section-label" data-i18n="wex_pairLabel">Deux compagnons, deux rôles</div>
+    <h2 class="section-title" data-i18n="wex_pairTitle">Parler et comprendre, ce n'est pas la même chose</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="book-meta" data-i18n="wex_appMeta">L'appli, la voix</div>
+        <h3 style="font-family:'Playfair Display',serif;margin:0.3rem 0 0.6rem;" data-i18n="wex_appTitle">Pour parler</h3>
+        <p class="book-desc" data-i18n="wex_appP">Entendez chaque phrase prononcée par de vrais locuteurs, répétez-la, testez votre prononciation et suivez vos progrès, thème après thème. Elle fonctionne même sans connexion.</p>
+      </div>
+      <div class="card">
+        <div class="book-meta" data-i18n="wex_bookMeta">Le livre, les codes</div>
+        <h3 style="font-family:'Playfair Display',serif;margin:0.3rem 0 0.6rem;" data-i18n="wex_bookTitle">Pour comprendre</h3>
+        <p class="book-desc" data-i18n="wex_bookP">Les descriptifs et les notes culturelles qui donnent du sens à chaque formule : pourquoi on prend le temps de saluer, comment négocier un prix sans vexer, ce que recouvre vraiment la téranga.</p>
+      </div>
+    </div>
+    <p class="pair-tagline" data-i18n="wex_pairTagline">Le livre dans la main pour comprendre, l'appli dans l'oreille pour parler.</p>
+  </div>
+</section>
+
+<section style="background:#FFF8EE;">
   <div class="wrap" style="max-width:760px;">
     <div class="section-label" data-i18n="wex_stepsLabel">Comment ça marche</div>
     <h2 class="section-title" data-i18n="wex_stepsTitle">Trois étapes, une fois pour toutes</h2>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <div class="step-text"><strong data-i18n="wex_step1Title">Trouvez votre code</strong><span data-i18n="wex_step1P">Sur la carte insérée dans votre exemplaire du livre.</span></div>
+        <div class="step-text"><strong data-i18n="wex_step1Title">Choisissez votre formule</strong><span data-i18n="wex_step1P">Appli seule ou Pack Duo, payée en ligne par Mobile Money (Wave, Orange Money) ou carte bancaire.</span></div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div class="step-text"><strong data-i18n="wex_step2Title">Activez-le ici</strong><span data-i18n="wex_step2P">Entrez votre code et votre e-mail dans le formulaire ci-dessous.</span></div>
+        <div class="step-text"><strong data-i18n="wex_step2Title">Recevez votre code</strong><span data-i18n="wex_step2P">Il s'affiche à l'écran juste après le paiement et vous est aussi envoyé par e-mail.</span></div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-text"><strong data-i18n="wex_step3Title">Écoutez le livre</strong><span data-i18n="wex_step3P">Un lien d'accès à l'appli audio vous est envoyé, valable définitivement pour cet exemplaire.</span></div>
+        <div class="step-text"><strong data-i18n="wex_step3Title">Activez et écoutez</strong><span data-i18n="wex_step3P">Entrez votre code et votre e-mail ci-dessous : l'accès à l'appli est définitif, et votre progression est sauvegardée.</span></div>
       </div>
     </div>
   </div>
@@ -113,10 +130,9 @@
 <section id="acheter">
   <div class="wrap">
     <div class="section-label" data-i18n="wex_buyLabel">Achat en ligne</div>
-    <h2 class="section-title" data-i18n="wex_buyTitle">Pas encore votre code ?</h2>
-    <p class="section-intro" data-i18n="wex_buyIntro">Achetez votre accès directement en ligne, par carte bancaire ou mobile money. Votre code d'activation vous sera fourni immédiatement après le paiement.</p>
-
-    <div class="form-card">
+    <h2 class="section-title" data-i18n="wex_buyTitle">Choisissez votre formule</h2>
+    <p class="section-intro" data-i18n="wex_buyIntro">Votre code d'activation vous est fourni immédiatement après le paiement.</p>
+    <div class="form-card" style="max-width:none;">
       <div class="field">
         <label for="buyEmail" data-i18n="wex_labelEmail">Votre e-mail</label>
         <input type="email" id="buyEmail" name="buyEmail" placeholder="vous@exemple.com" required autocomplete="email">
@@ -127,38 +143,71 @@
           <span data-i18n="wex_acceptCgv" style="min-width:0;">J'accepte les <a href="cgv.html" target="_blank" rel="noopener">Conditions Générales de Vente</a> et la <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>, et je reconnais que l'accès au produit numérique m'est fourni immédiatement après paiement.</span>
         </label>
       </div>
-      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
-        <button type="button" class="btn btn-terracotta" style="flex:1 1 220px;justify-content:center;" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')" data-i18n="wex_btnAppOnly">Appli seule, 5 900 FCFA</button>
-        <button type="button" class="btn btn-outline" style="flex:1 1 220px;justify-content:center;" id="buyBookAppBtn" onclick="acheterWolofExpress('book_app')" data-i18n="wex_btnBookApp">Livre + Appli, 9 900 FCFA</button>
+      <div class="grid grid-2" style="margin-top:1.4rem;gap:1.2rem;">
+        <div class="card offer-card">
+          <h3 style="font-family:'Playfair Display',serif;margin:0;" data-i18n="wex_offerAppTitle">Appli seule</h3>
+          <div class="offer-price">5 900 FCFA</div>
+          <p class="book-desc" data-i18n="wex_offerAppP">Entendez et parlez le wolof du quotidien, phrase par phrase. Accès définitif.</p>
+          <button type="button" class="btn btn-terracotta" id="buyAppOnlyBtn" onclick="acheterWolofExpress('app_only')" data-i18n="wex_btnAppOnly">Acheter l'appli</button>
+        </div>
+        <div class="card offer-card" style="border:2px solid var(--or);">
+          <span class="btag" style="align-self:flex-start;position:static;" data-i18n="wex_offerDuoTag">À offrir</span>
+          <h3 style="font-family:'Playfair Display',serif;margin:0;" data-i18n="wex_offerDuoTitle">Pack Duo</h3>
+          <div class="offer-price">9 900 FCFA</div>
+          <p class="book-desc" data-i18n="wex_offerDuoP">Deux accès à l'appli : un pour vous, un à offrir. Idéal pour un couple, une famille qui s'installe, ou un cadeau.</p>
+          <button type="button" class="btn btn-terracotta" id="buyDuoBtn" onclick="acheterWolofExpress('duo')" data-i18n="wex_btnDuo">Acheter le Pack Duo</button>
+        </div>
       </div>
       <div class="form-msg" id="buyMsg"></div>
     </div>
   </div>
 </section>
 
-<!-- Overlay affiché uniquement après un retour de paiement PayDunya réussi
-     (URL contenant ?paiement=confirme&token=...). Reste invisible sinon. -->
-<div id="confirmOverlay" style="
-  display:none;
-  position:fixed; inset:0;
-  background:rgba(31,20,10,0.65);
-  z-index:9999;
-  align-items:center; justify-content:center;
-  padding:1rem;
-">
-  <div class="form-card" style="max-width:440px; width:100%; text-align:center;">
-    <div id="confirmContent">
-      <p>Vérification de votre paiement en cours…</p>
+<section id="livre" style="background:#FFF8EE;">
+  <div class="wrap">
+    <div class="section-label" data-i18n="wex_bookLabel">Le livre</div>
+    <h2 class="section-title" data-i18n="wex_bookSecTitle">Feuilletez le livre, en précommande</h2>
+    <p class="section-intro" data-i18n="wex_bookSecP">Le compagnon de l'appli : les codes culturels et les descriptifs qui donnent du sens à chaque mot. Dix thèmes, du salut à la téranga, en passant par le marché, les déplacements et le temps, et un lexique de poche. Sortie prévue pour décembre 2026.</p>
+    <div class="book-preview" id="bookPreview">
+      <img src="assets/img/livre-wolof-express.jpg" alt="Couverture du livre Wolof Express" onerror="this.remove()">
+      <img src="assets/img/livre-apercu-1.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
+      <img src="assets/img/livre-apercu-2.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
+      <img src="assets/img/livre-apercu-3.jpg" alt="Aperçu d'une page du livre Wolof Express" onerror="this.remove()">
     </div>
+    <div class="grid grid-2" style="gap:1.2rem;margin-top:0.5rem;">
+      <div class="card offer-card">
+        <span class="btag" style="align-self:flex-start;position:static;" data-i18n="wex_preorderTag">Précommande</span>
+        <h3 style="font-family:'Playfair Display',serif;margin:0;" data-i18n="wex_bookOnlyTitle">Le livre</h3>
+        <div class="offer-price">6 600 FCFA</div>
+        <p class="book-desc" data-i18n="wex_bookOnlyP">Les codes culturels et les descriptifs, à garder sous la main ou à offrir.</p>
+        <a class="btn btn-terracotta" target="_blank" rel="noopener" href="https://wa.me/221771532198?text=Bonjour%2C%20je%20souhaite%20pr%C3%A9commander%20le%20livre%20Wolof%20Express%20(6%20600%20FCFA)%20et%20%C3%AAtre%20pr%C3%A9venu(e)%20de%20sa%20sortie." data-i18n="wex_btnOrderBook">Précommander sur WhatsApp</a>
+      </div>
+      <div class="card offer-card" style="border:2px solid var(--or);">
+        <span class="btag" style="align-self:flex-start;position:static;" data-i18n="wex_bundleTag">Le duo complet</span>
+        <h3 style="font-family:'Playfair Display',serif;margin:0;" data-i18n="wex_bundleTitle">Livre + Appli</h3>
+        <div class="offer-price">10 900 FCFA <span style="font-size:0.75em;font-weight:400;text-decoration:line-through;color:var(--brun-clair);">12 500</span></div>
+        <p class="book-desc" data-i18n="wex_bundleP">Le livre pour comprendre et l'appli pour parler. Votre code d'activation vous sera remis avec le livre, à sa sortie.</p>
+        <a class="btn btn-terracotta" target="_blank" rel="noopener" href="https://wa.me/221771532198?text=Bonjour%2C%20je%20souhaite%20pr%C3%A9commander%20le%20pack%20Livre%20%2B%20Appli%20Wolof%20Express%20(10%20900%20FCFA)%20et%20%C3%AAtre%20pr%C3%A9venu(e)%20de%20sa%20sortie." data-i18n="wex_btnOrderBundle">Précommander sur WhatsApp</a>
+      </div>
+    </div>
+    <p style="margin-top:1rem;font-size:0.9rem;" data-i18n="wex_preorderNote">Aucun paiement à ce stade : nous vous recontacterons dès la sortie du livre pour confirmer votre commande. Vous voulez commencer tout de suite ? <a href="#acheter">L'appli est disponible dès maintenant.</a></p>
+    <p style="margin-top:0.4rem;font-size:0.9rem;" data-i18n="wex_orderMailNote">Vous préférez l'e-mail ? Écrivez à <a href="mailto:contact@leerukocc.com?subject=Pr%C3%A9commande%20Wolof%20Express">contact@leerukocc.com</a> en précisant votre choix.</p>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+
+<div id="confirmOverlay" style="display:none;position:fixed;inset:0;background:rgba(31,20,10,0.65);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+  <div class="form-card" style="max-width:440px;width:100%;text-align:center;">
+    <div id="confirmContent"><p>Vérification de votre paiement en cours…</p></div>
   </div>
 </div>
 
-<section id="activer" style="background:#FFF8EE;">
+<section id="activer">
   <div class="wrap">
     <div class="section-label" data-i18n="wex_activerLabel">Activation</div>
     <h2 class="section-title" data-i18n="wex_activerTitle">Débloquez votre appli audio</h2>
-    <p class="section-intro" data-i18n="wex_activerIntro">Le code se trouve sur la carte insérée dans votre livre. Il ne fonctionne qu'une seule fois.</p>
-
+    <p class="section-intro" data-i18n="wex_activerIntro">Votre code vous a été envoyé par e-mail après l'achat. Il s'active une seule fois, avec votre e-mail. Vous changez d'appareil ? Entrez le même code et le même e-mail : un code de confirmation vous sera envoyé, et votre progression sera restaurée.</p>
     <div class="form-card">
       <form id="activationForm">
         <div class="field">
@@ -168,6 +217,10 @@
         <div class="field">
           <label for="email" data-i18n="wex_labelEmail">Votre e-mail</label>
           <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+        </div>
+        <div class="field" id="otpField" style="display:none;">
+          <label for="otp" data-i18n="wex_labelOtp">Code de confirmation reçu par e-mail</label>
+          <input type="text" id="otp" name="otp" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
         </div>
         <button type="submit" class="btn btn-terracotta" style="width:100%;justify-content:center;" id="activateBtn" data-i18n="wex_btnActiver">Activer l'appli</button>
         <div class="form-msg" id="activationMsg"></div>
@@ -185,6 +238,7 @@
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_navTitle">Navigation</h4>
+        <a href="apprendre-le-wolof.html" data-i18n="nav_apprendreWolof">Apprendre le wolof</a>
         <a href="cours.html" data-i18n="nav_cours">Cours de Wolof</a>
         <a href="consultance.html" data-i18n="nav_consultance">Consultance &amp; Traduction</a>
         <a href="decoder-le-senegal.html" data-i18n="nav_decoder">Décoder le Sénégal</a>
@@ -196,7 +250,7 @@
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_contactTitle">Contact</h4>
-        <p>leerukocc@gmail.com</p>
+        <p>contact@leerukocc.com</p>
         <p>+221 77 153 21 98</p>
       </div>
     </div>
@@ -204,7 +258,7 @@
       <a href="cgu.html">CGU</a> · <a href="cgv.html">CGV</a> · <a href="confidentialite.html">Politique de confidentialité</a>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Éditions Leeru Kocc, Dakar, Sénégal</span>
+      <span>© 2026 Leeru Kocc, Dakar, Sénégal</span>
       <span data-i18n="footer_rights">Tous droits réservés</span>
     </div>
   </div>
@@ -213,170 +267,176 @@
 <script src="assets/script.js"></script>
 <script src="assets/i18n.js"></script>
 <script>
-// Petit helper : texte anglais si dispo, sinon fallback français fourni
-function T(key, fallback){ return (window.leerukoccT && window.leerukoccT(key)) || fallback; }
 function isEn(){ return window.leerukoccLang && window.leerukoccLang() === 'en'; }
+function T(key, fallback){ return (window.leerukoccT && window.leerukoccT(key)) || fallback; }
 
+// ---------- Aperçu du livre : agrandissement au toucher ----------
+(function(){
+  const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightboxImg');
+  document.getElementById('bookPreview').addEventListener('click', function(e){
+    if (e.target.tagName !== 'IMG') return;
+    lbImg.src = e.target.src; lbImg.alt = e.target.alt; lb.style.display = 'flex';
+  });
+  lb.addEventListener('click', function(){ lb.style.display = 'none'; });
+})();
+
+// ---------- Activation (avec confirmation par e-mail sur un nouvel appareil) ----------
+let otpRequired = false;
 document.getElementById('activationForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const code = document.getElementById('code').value.trim().toUpperCase();
   const email = document.getElementById('email').value.trim();
+  const otp = document.getElementById('otp').value.trim();
+  const otpField = document.getElementById('otpField');
   const msg = document.getElementById('activationMsg');
   const btn = document.getElementById('activateBtn');
+  const defaultLabel = T('wex_btnActiver', "Activer l'appli");
 
   msg.className = 'form-msg show loading';
   msg.textContent = isEn() ? 'Checking…' : 'Vérification en cours…';
   btn.disabled = true;
-
   try{
+    const payload = { code, email };
+    if (otpRequired) payload.otp = otp;
     const res = await fetch('/.netlify/functions/verify-code', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code, email })
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
     });
     const data = await res.json();
 
-    if(res.ok && data.success){
+    if (res.ok && data.success){
+      // Code et e-mail transmis à l'appli pour la sauvegarde de progression,
+      // et progression déjà enregistrée restaurée sur ce nouvel appareil.
+      let appUrl = data.appUrl + '&code=' + encodeURIComponent(code) + '&email=' + encodeURIComponent(email);
+      if (data.progress){
+        try { appUrl += '&progress=' + encodeURIComponent(btoa(unescape(encodeURIComponent(data.progress)))); } catch(err){}
+      }
+      otpRequired = false; otpField.style.display = 'none'; btn.textContent = defaultLabel;
       msg.className = 'form-msg show success';
       msg.innerHTML = (isEn() ? 'Code valid! ' : 'Code validé ! ') +
-        '<a href="' + data.appUrl + '" style="text-decoration:underline;">' +
+        '<a href="' + appUrl + '" style="text-decoration:underline;">' +
         (isEn() ? 'Click here to open your audio app' : 'Cliquez ici pour ouvrir votre appli audio') + '</a>.';
+    } else if (data.otpRequired){
+      otpRequired = true; otpField.style.display = ''; document.getElementById('otp').focus();
+      btn.textContent = isEn() ? 'Confirm' : 'Confirmer';
+      msg.className = 'form-msg show success';
+      msg.textContent = data.message || (isEn() ? 'A confirmation code was just sent to your email.' : 'Un code de confirmation vient de vous être envoyé par e-mail.');
     } else {
+      otpRequired = false; otpField.style.display = 'none'; btn.textContent = defaultLabel;
       msg.className = 'form-msg show error';
       msg.textContent = data.message || (isEn() ? 'This code is invalid or has already been used.' : "Ce code n'est pas valide ou a déjà été utilisé.");
     }
   } catch(err){
     msg.className = 'form-msg show error';
-    msg.textContent = isEn() ? 'Connection error. Please try again shortly.' : "Erreur de connexion. Réessayez dans un instant.";
+    msg.textContent = isEn() ? 'Connection error. Please try again shortly.' : 'Erreur de connexion. Réessayez dans un instant.';
   } finally {
     btn.disabled = false;
   }
 });
 
-// ---------------------------------------------------------------
-// Achat en ligne (PayDunya) — appelée par les boutons de la section #acheter
-// ---------------------------------------------------------------
+// ---------- Achat en ligne (Bictorys) ----------
 async function acheterWolofExpress(product){
   const emailInput = document.getElementById('buyEmail');
   const email = emailInput.value.trim();
   const msg = document.getElementById('buyMsg');
-  const btnAppOnly = document.getElementById('buyAppOnlyBtn');
-  const btnBookApp = document.getElementById('buyBookAppBtn');
-  const cgvCheckbox = document.getElementById('acceptCgv');
+  const btns = [document.getElementById('buyAppOnlyBtn'), document.getElementById('buyDuoBtn')];
+  const cgv = document.getElementById('acceptCgv');
 
-  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     msg.className = 'form-msg show error';
     msg.textContent = isEn() ? 'Please enter a valid email before continuing.' : "Merci d'indiquer un e-mail valide avant de continuer.";
-    emailInput.focus();
-    return;
+    emailInput.focus(); return;
   }
-
-  if(!cgvCheckbox.checked){
+  if (!cgv.checked){
     msg.className = 'form-msg show error';
-    msg.textContent = isEn()
-      ? 'Please accept the Terms of Sale and Privacy Policy before continuing.'
-      : "Merci d'accepter les CGV et la Politique de confidentialité avant de continuer.";
-    cgvCheckbox.focus();
-    return;
+    msg.textContent = isEn() ? 'Please accept the Terms of Sale and Privacy Policy before continuing.' : "Merci d'accepter les CGV et la Politique de confidentialité avant de continuer.";
+    cgv.focus(); return;
   }
-
   msg.className = 'form-msg show loading';
   msg.textContent = isEn() ? 'Redirecting to payment…' : 'Redirection vers le paiement…';
-  btnAppOnly.disabled = true;
-  btnBookApp.disabled = true;
-
+  btns.forEach(b => b.disabled = true);
   try{
     const res = await fetch('/.netlify/functions/create-invoice', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ email, product })
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email, product })
     });
     const data = await res.json();
-
-    if(res.ok && data.checkout_url){
+    if (res.ok && data.checkout_url){
+      try { localStorage.setItem('wolofPendingEmail', email); } catch(err){}
       window.location.href = data.checkout_url;
-      return; // on quitte la page, pas besoin de réactiver les boutons
-    } else {
-      msg.className = 'form-msg show error';
-      msg.textContent = data.error || (isEn() ? 'Something went wrong. Please try again.' : "Une erreur est survenue. Réessayez.");
+      return;
     }
+    msg.className = 'form-msg show error';
+    msg.textContent = data.error || (isEn() ? 'Something went wrong. Please try again.' : 'Une erreur est survenue. Réessayez.');
   } catch(err){
     msg.className = 'form-msg show error';
-    msg.textContent = isEn() ? 'Connection error. Please try again shortly.' : "Erreur de connexion. Réessayez dans un instant.";
+    msg.textContent = isEn() ? 'Connection error. Please try again shortly.' : 'Erreur de connexion. Réessayez dans un instant.';
   } finally {
-    btnAppOnly.disabled = false;
-    btnBookApp.disabled = false;
+    btns.forEach(b => b.disabled = false);
   }
 }
 
-// ---------------------------------------------------------------
-// Retour de paiement PayDunya — se déclenche uniquement si l'URL
-// contient ?paiement=confirme&token=XXXX (redirection automatique
-// après un paiement réussi). Ne dépend pas de l'IPN PayDunya, qui
-// peut arriver avec un délai : cette vérification est immédiate.
-// ---------------------------------------------------------------
+// ---------- Retour de paiement Bictorys : ?paiement=confirme&ref=... ----------
+// Les codes sont attribués par le webhook, qui peut arriver avec quelques
+// secondes de retard : on réessaie plusieurs fois avant d'abandonner.
 (function(){
   const params = new URLSearchParams(window.location.search);
-  if(params.get('paiement') !== 'confirme') return;
-  const token = params.get('token');
-  if(!token) return;
+  if (params.get('paiement') !== 'confirme') return;
+  const ref = params.get('ref');
+  if (!ref) return;
 
   const overlay = document.getElementById('confirmOverlay');
   const content = document.getElementById('confirmContent');
   overlay.style.display = 'flex';
   content.innerHTML = '<p>' + (isEn() ? 'Checking your payment…' : 'Vérification de votre paiement en cours…') + '</p>';
+  const contact = '<a href="mailto:contact@leerukocc.com">contact@leerukocc.com</a>';
+  const MAX_ATTEMPTS = 8, DELAY_MS = 3000;
 
-  fetch('/.netlify/functions/confirm-payment?token=' + encodeURIComponent(token))
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      const en = isEn();
-      if(data.assigned && data.code){
-        content.innerHTML =
-          '<h3 style="margin-top:0;">' + (en ? 'Thank you for your purchase!' : 'Merci pour votre achat !') + '</h3>' +
-          '<p>' + (en ? 'Your access code: ' : "Votre code d'accès : ") + '<strong style="letter-spacing:1px;">' + data.code + '</strong></p>' +
-          '<p style="color:#666;font-size:0.9em;">' + (en
-            ? 'We\'ve also sent it by email. Is this app for you? Activate it below. Buying it as a gift? Just share this code, the recipient can activate it themselves, on their own device.'
-            : 'Il vous a aussi été envoyé par e-mail. Cette appli est pour vous ? Activez-la ci-dessous. Vous l\'offrez ? Partagez simplement ce code, la personne pourra l\'activer elle-même, sur son propre appareil.') + '</p>' +
-          '<p style="color:#999;font-size:0.8em;margin-top:0.5rem;">' + (en
-            ? 'No email within 5 minutes? Write to <a href="mailto:umar@leerukocc.com">umar@leerukocc.com</a>.'
-            : "Pas d'e-mail reçu sous 5 minutes ? Écrivez à <a href=\"mailto:umar@leerukocc.com\">umar@leerukocc.com</a>.") + '</p>' +
-          '<button type="button" id="confirmActivateBtn" class="btn btn-terracotta" style="width:100%;justify-content:center;margin-top:0.75rem;">' +
-          (en ? 'Activate on this device' : 'Activer sur cet appareil') + '</button>' +
-          '<button type="button" id="confirmCloseBtn" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.6rem;">' +
-          (en ? 'Close' : 'Fermer') + '</button>';
+  function showPending(){
+    const en = isEn();
+    content.innerHTML = '<h3 style="margin-top:0;">' + (en ? 'Payment received' : 'Paiement reçu') + '</h3>' +
+      '<p>' + (en ? "We are finalizing your code, it will arrive by email shortly. Nothing within 5 minutes? Check your spam folder, then write to "
+                  : "Nous finalisons l'attribution de votre code, il arrive par e-mail. Rien sous 5 minutes ? Vérifiez vos courriers indésirables, puis écrivez à ") +
+      contact + (en ? ' with your purchase email.' : " avec votre e-mail d'achat.") + '</p>' +
+      '<button type="button" id="confirmCloseBtn" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.6rem;">' + (en ? 'Close' : 'Fermer') + '</button>';
+    document.getElementById('confirmCloseBtn').addEventListener('click', function(){ overlay.style.display = 'none'; });
+  }
 
-        document.getElementById('confirmActivateBtn').addEventListener('click', function(){
-          document.getElementById('code').value = data.code;
-          overlay.style.display = 'none';
-          document.getElementById('activer').scrollIntoView({ behavior: 'smooth' });
-          document.getElementById('email').focus();
-        });
-        document.getElementById('confirmCloseBtn').addEventListener('click', function(){
-          overlay.style.display = 'none';
-        });
-      } else if(data.status === 'completed'){
-        content.innerHTML =
-          '<h3 style="margin-top:0;">' + (en ? 'Payment received' : 'Paiement reçu') + '</h3>' +
-          '<p>' + (en
-            ? 'We are finalizing your code. If you don\'t receive anything shortly, contact us at '
-            : "Nous finalisons l'attribution de votre code. Si vous ne recevez rien sous peu, contactez-nous à ") +
-          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a>' +
-          (en ? ' with your purchase email.' : ' avec votre e-mail d\'achat.') + '</p>';
-      } else {
-        content.innerHTML =
-          '<h3 style="margin-top:0;">' + (en ? 'Payment status: ' : 'Statut du paiement : ') + (data.status || (en ? 'unknown' : 'inconnu')) + '</h3>' +
-          '<p>' + (en ? 'If you think this is an error, contact us at ' : "Si vous pensez qu'il y a une erreur, contactez-nous à ") +
-          '<a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a>.</p>';
-      }
-    })
-    .catch(function(){
-      const en = isEn();
-      content.innerHTML =
-        '<h3 style="margin-top:0;">' + (en ? 'An error occurred' : 'Une erreur est survenue') + '</h3>' +
-        '<p>' + (en
-          ? 'Contact us at <a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> with your purchase email, we will check manually.'
-          : 'Contactez-nous à <a href="mailto:leerukocc@gmail.com">leerukocc@gmail.com</a> avec votre e-mail d\'achat, nous vérifierons manuellement.') + '</p>';
+  function showCodes(codes){
+    const en = isEn(), duo = codes.length > 1;
+    let pendingEmail = '';
+    try { pendingEmail = localStorage.getItem('wolofPendingEmail') || ''; localStorage.removeItem('wolofPendingEmail'); } catch(err){}
+    const list = codes.map(c => '<p style="margin:0.3rem 0;"><strong style="letter-spacing:1px;font-size:1.1em;">' + c + '</strong></p>').join('');
+    content.innerHTML =
+      '<h3 style="margin-top:0;">' + (en ? 'Thank you for your purchase!' : 'Merci pour votre achat !') + '</h3>' +
+      '<p>' + (duo ? (en ? 'Your two access codes:' : "Vos deux codes d'accès :") : (en ? 'Your access code:' : "Votre code d'accès :")) + '</p>' + list +
+      '<p style="color:#666;font-size:0.9em;">' + (duo
+        ? (en ? 'One for you, one to give: each code is activated once, with the email of the person using it. They were also sent to you by email.'
+              : "Un pour vous, un à offrir : chaque code s'active une seule fois, avec l'e-mail de la personne qui l'utilise. Ils vous ont aussi été envoyés par e-mail.")
+        : (en ? "We've also sent it by email. Buying it as a gift? Just share the code, the recipient activates it on their own device."
+              : "Il vous a aussi été envoyé par e-mail. Vous l'offrez ? Partagez simplement le code, la personne l'activera sur son propre appareil.")) + '</p>' +
+      '<p style="color:#999;font-size:0.8em;">' + (en ? 'No email within 5 minutes? Check your spam folder or write to ' : "Pas d'e-mail sous 5 minutes ? Vérifiez vos courriers indésirables ou écrivez à ") + contact + '.</p>' +
+      '<button type="button" id="confirmActivateBtn" class="btn btn-terracotta" style="width:100%;justify-content:center;margin-top:0.75rem;">' + (en ? 'Activate on this device' : 'Activer sur cet appareil') + '</button>' +
+      '<button type="button" id="confirmCloseBtn" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.6rem;">' + (en ? 'Close' : 'Fermer') + '</button>';
+    document.getElementById('confirmActivateBtn').addEventListener('click', function(){
+      document.getElementById('code').value = codes[0];
+      if (pendingEmail) document.getElementById('email').value = pendingEmail;
+      overlay.style.display = 'none';
+      document.getElementById('activer').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('email').focus();
     });
+    document.getElementById('confirmCloseBtn').addEventListener('click', function(){ overlay.style.display = 'none'; });
+  }
+
+  function check(attempt){
+    fetch('/.netlify/functions/confirm-payment?ref=' + encodeURIComponent(ref))
+      .then(r => r.json())
+      .then(data => {
+        if (data.assigned && data.codes && data.codes.length) showCodes(data.codes);
+        else if (attempt < MAX_ATTEMPTS) setTimeout(() => check(attempt + 1), DELAY_MS);
+        else showPending();
+      })
+      .catch(() => { if (attempt < MAX_ATTEMPTS) setTimeout(() => check(attempt + 1), DELAY_MS); else showPending(); });
+  }
+  check(1);
 })();
 </script>
 </body>
