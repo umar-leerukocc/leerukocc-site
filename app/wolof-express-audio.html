@@ -86,6 +86,11 @@ body { background:#111; font-family:'Lato',sans-serif; display:flex; justify-con
 .proverbe::before { content:"\201C"; position:absolute; left:0.5rem; top:0.15rem; font-family:'Playfair Display',serif; font-size:2rem; color:#C8A850; opacity:0.7; line-height:1; }
 .proverbe .ptext { font-family:'Playfair Display',serif; font-style:italic; font-size:0.8rem; color:#1A1208; line-height:1.5; }
 .proverbe .ptrad { font-size:0.67rem; color:#8B7355; margin-top:0.25rem; }
+.mode-switch { margin:0 0 1.1rem; }
+.mode-switch-seg { display:flex; background:rgba(122,48,16,0.08); border-radius:2rem; padding:0.25rem; gap:0.25rem; }
+.mode-switch-seg button { flex:1; border:none; background:transparent; color:#7A3010; font-family:'Lato',sans-serif; font-weight:700; font-size:0.82rem; padding:0.55rem 0.6rem; border-radius:2rem; cursor:pointer; transition:background .2s,color .2s; }
+.mode-switch-seg button.active { background:linear-gradient(155deg,#7A3010,#4A1400); color:#E8C87A; box-shadow:0 2px 6px rgba(74,20,0,0.25); }
+.mode-switch-hint { font-size:0.74rem; color:#8B7355; text-align:center; margin-top:0.5rem; line-height:1.35; }
 .section-label { font-size:0.62rem; letter-spacing:3px; text-transform:uppercase; color:#8B7355; margin-bottom:0.6rem; font-weight:700; }
 .theme-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; }
 .theme-card { position:relative; overflow:hidden; background:radial-gradient(circle at 88% -12%, color-mix(in srgb, var(--tc,#999) 20%, transparent) 0%, transparent 58%), linear-gradient(155deg,#FFFFFF 0%,#FFFBF3 100%); border-radius:1.1rem; padding:1rem 0.95rem; cursor:pointer; box-shadow:0 4px 14px color-mix(in srgb, var(--tc,#000) 14%, rgba(26,18,8,0.06)), 0 1px 3px rgba(26,18,8,0.05); border:1px solid color-mix(in srgb, var(--tc,#999) 18%, rgba(26,18,8,0.06)); border-top:3px solid var(--tc,#999); user-select:none; transition:transform 0.15s ease, box-shadow 0.15s ease; opacity:0; animation:cardIn 0.45s ease forwards; }
@@ -242,7 +247,8 @@ body { background:#111; font-family:'Lato',sans-serif; display:flex; justify-con
         <div class="ptext">« Ndànk ndànk mooy jàpp golo ci ñaay »</div>
         <div class="ptrad" id="i18n-ptrad"></div>
       </div>
-      <div class="section-label" id="i18n-sectionlabel"></div>
+      <div class="mode-switch" id="mode-switch" style="display:none;"></div>
+    <div class="section-label" id="i18n-sectionlabel"></div>
       <div class="theme-grid" id="theme-grid"></div>
       <div class="footer">Leeru Kocc · contact@leerukocc.com · 77 605 40 40<br><span id="btn-reset-progress" class="reset-link" id="i18n-resetlink"></span></div>
     </div>
@@ -603,6 +609,11 @@ const UI = {
     lockmodaltext: (prevLabel, threshold, curLabel) => `Termine le quiz classique et le quiz prononciation de «&nbsp;${prevLabel}&nbsp;» avec une moyenne de ${threshold}% ou plus pour débloquer «&nbsp;${curLabel}&nbsp;».`,
     lockmodalscore: "Score actuel : ",
     lockmodalbtn: "Compris",
+    modeLearning: "Apprentissage",
+    modeFree: "Libre",
+    modeHintLearning: "Les thèmes s'ouvrent au fil de vos progrès.",
+    modeHintFree: "Tous les thèmes sont ouverts, dans l'ordre que vous voulez.",
+    lockmodalfree: "Ou passer en mode libre",
     notStarted: "pas encore commencé",
     unlocked: " débloqué",
     masteredLabel: " thèmes maîtrisés",
@@ -674,6 +685,11 @@ const UI = {
     lockmodaltext: (prevLabel, threshold, curLabel) => `Finish the classic quiz and the pronunciation quiz for «&nbsp;${prevLabel}&nbsp;» with an average of ${threshold}% or more to unlock «&nbsp;${curLabel}&nbsp;».`,
     lockmodalscore: "Current score: ",
     lockmodalbtn: "Got it",
+    modeLearning: "Learning",
+    modeFree: "Free",
+    modeHintLearning: "Themes open up as you progress.",
+    modeHintFree: "All themes are open, in whatever order you like.",
+    lockmodalfree: "Or switch to free mode",
     notStarted: "not started yet",
     unlocked: " unlocked",
     masteredLabel: " themes mastered",
@@ -734,6 +750,8 @@ if (urlParams.get('unlocked') === '1' || _urlCode || _urlEmail || _urlProgress) 
   window.history.replaceState({}, '', window.location.pathname + window.location.hash);
 }
 let fullAccess = localStorage.getItem('wolofFullAccess') === '1';
+// Mode de navigation de l'acheteur : « learning » (déblocage progressif, par défaut) ou « free » (tous les thèmes ouverts)
+let appMode = 'learning'; try { if (localStorage.getItem('wolofMode') === 'free') appMode = 'free'; } catch(e){}
 
 let lang = localStorage.getItem('wolofLang') || 'fr';
 
@@ -795,6 +813,7 @@ function applyStaticI18n(){
   if (qtitle && !quizQuestions.length) qtitle.textContent = U('quiztitledefault');
   const langBtn = document.getElementById('btn-lang');
   if (langBtn) langBtn.textContent = lang==='fr' ? 'EN' : 'FR';
+  renderModeSwitch();
   document.documentElement.lang = lang;
 }
 
@@ -838,9 +857,11 @@ function showLockModal(t, prevTheme, threshold, scoreTxt){
       <div class="lock-modal-text">${U('lockmodaltext')(TL(prevTheme), threshold, TL(t))}</div>
       <div class="lock-modal-score">${U('lockmodalscore')}${scoreTxt}</div>
       <button class="lock-modal-btn">${U('lockmodalbtn')}</button>
+      <div id="lock-free-link" style="margin-top:0.8rem;font-size:0.8rem;text-decoration:underline;cursor:pointer;color:#7A3010;">${U('lockmodalfree')}</div>
     </div>`;
   app.appendChild(fx);
   const close = () => fx.remove();
+  fx.querySelector('#lock-free-link').addEventListener('click', () => { setAppMode('free'); close(); });
   fx.addEventListener('click', e => { if(e.target === fx) close(); });
   fx.querySelector('.lock-modal-btn').addEventListener('click', close);
 }
@@ -1055,8 +1076,26 @@ function getUnlockThreshold(themeId){
   if(themeId==='saluer') return 70;
   return 50;
 }
+// ── MODE APPRENTISSAGE / MODE LIBRE ────────────────────────────────────────
+function setAppMode(m){
+  appMode = (m==='free') ? 'free' : 'learning';
+  try { localStorage.setItem('wolofMode', appMode); } catch(e){}
+  updateLockStates();
+  renderModeSwitch();
+}
+function renderModeSwitch(){
+  const box = document.getElementById('mode-switch'); if(!box) return;
+  if(!fullAccess){ box.style.display='none'; return; }   // réservé aux acheteurs
+  box.style.display='';
+  box.innerHTML = '<div class="mode-switch-seg" role="group" aria-label="Mode">'
+    + '<button type="button" data-mode="learning" class="'+(appMode==='learning'?'active':'')+'" aria-pressed="'+(appMode==='learning')+'">'+U('modeLearning')+'</button>'
+    + '<button type="button" data-mode="free" class="'+(appMode==='free'?'active':'')+'" aria-pressed="'+(appMode==='free')+'">'+U('modeFree')+'</button></div>'
+    + '<div class="mode-switch-hint">'+U(appMode==='free'?'modeHintFree':'modeHintLearning')+'</div>';
+  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ if(b.dataset.mode!==appMode) setAppMode(b.dataset.mode); }));
+}
 function isThemeUnlocked(index){
   if(!fullAccess && index>=DEMO_THEME_LIMIT) return false;
+  if(fullAccess && appMode==='free') return true;
   if(index===0) return true;
   const prevTheme = themes[index-1];
   const s = themeScore(prevTheme.id);
