@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wolof Express : l'appli audio pour parler le wolof du quotidien | Leeru Kocc</title>
-<meta name="description" content="Wolof Express : une appli audio pour entendre et parler le wolof du quotidien, phrase par phrase, et un livre pour en comprendre les codes culturels. Essai gratuit, accès définitif dès 5 900 FCFA.">
+<title>Wolof Express : l'appli pour entendre et parler le wolof du quotidien | Leeru Kocc</title>
+<meta name="description" content="Wolof Express : une appli pour entendre et parler le wolof du quotidien, phrase par phrase, et un livre pour en comprendre les codes culturels. Essai gratuit, accès définitif dès 5 900 FCFA.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lato:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -29,7 +29,7 @@
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Wolof Express",
-  "description": "Appli audio pour entendre et parler le wolof du quotidien, et guide de poche des codes culturels sénégalais.",
+  "description": "Appli pour entendre et parler le wolof du quotidien, et guide de poche des codes culturels sénégalais.",
   "image": "https://leerukocc.com/assets/img/og-image-wolof-express.jpg",
   "brand": { "@type": "Brand", "name": "Leeru Kocc" },
   "offers": [
@@ -88,9 +88,9 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow" data-i18n="wex_heroEyebrow">Appli audio + guide de poche · Leeru Kocc</div>
+    <div class="hero-eyebrow" data-i18n="wex_heroEyebrow">Appli + guide de poche · Leeru Kocc</div>
     <h1 data-i18n="wex_h1">Le wolof du quotidien,<br>dans votre poche.</h1>
-    <p data-i18n="wex_heroP">Une appli audio pour entendre et parler le wolof de tous les jours, phrase par phrase, prononcé par de vrais locuteurs. Et un livre pour en comprendre les codes. L'appli pour entendre, le livre pour comprendre.</p>
+    <p data-i18n="wex_heroP">Une appli pour entendre et parler le wolof de tous les jours, phrase par phrase, prononcé par de vrais locuteurs. Et un livre pour en comprendre les codes. L'appli pour entendre, le livre pour comprendre.</p>
     <div class="hero-actions">
       <a href="#acheter" class="btn btn-primary" data-i18n="wex_btnAcheter">Acheter l'appli &rarr;</a>
       <a href="app/wolof-express-audio.html" class="btn btn-outline" data-i18n="wex_btnTryFree">Essayer gratuitement &rarr;</a>
@@ -233,7 +233,7 @@
 <section id="activer">
   <div class="wrap">
     <div class="section-label" data-i18n="wex_activerLabel">Activation</div>
-    <h2 class="section-title" data-i18n="wex_activerTitle">Débloquez votre appli audio</h2>
+    <h2 class="section-title" data-i18n="wex_activerTitle">Débloquez votre appli</h2>
     <p class="section-intro" data-i18n="wex_activerIntro">Votre code vous a été envoyé par e-mail après l'achat. Il s'active une seule fois, avec votre e-mail. Vous changez d'appareil ? Entrez le même code et le même e-mail : un code de confirmation vous sera envoyé, et votre progression sera restaurée.</p>
     <div class="form-card">
       <form id="activationForm">
@@ -401,7 +401,7 @@ document.getElementById('activationForm').addEventListener('submit', async funct
       msg.className = 'form-msg show success';
       msg.innerHTML = (isEn() ? 'Code valid! ' : 'Code validé ! ') +
         '<a href="' + appUrl + '" style="text-decoration:underline;">' +
-        (isEn() ? 'Click here to open your audio app' : 'Cliquez ici pour ouvrir votre appli audio') + '</a>.';
+        (isEn() ? 'Click here to open your app' : 'Cliquez ici pour ouvrir votre appli') + '</a>.';
     } else if (data.otpRequired){
       otpRequired = true; otpField.style.display = ''; document.getElementById('otp').focus();
       btn.textContent = isEn() ? 'Confirm' : 'Confirmer';
