@@ -345,7 +345,7 @@ const themes = [
     sections:[
       { title:"Le bonjour universel", titleEn:"The universal hello", phrases:[
         {fr:"Bonjour / Paix sur vous", en:"Hello / Peace be upon you",      wo:"Salaamaalekum",        ph:"salamalèkoume", audio:"salaamaalekum"},
-        {fr:"Réponse — bonjour", en:"Response — hello",            wo:"Malekum salaam",       ph:"malèkoumsalam", audio:"malekumsalaam"},
+        {fr:"Réponse — bonjour", en:"Response — hello",            wo:"Maalekum salaam",       ph:"malèkoumsalam", audio:"malekumsalaam"},
       ]},
       { title:"Comment tu vas ?", titleEn:"How are you?", phrases:[
         {fr:"Comment tu vas ?", en:"How are you?",             wo:"Nan nga def ?",        ph:"nangadèfe", audio:"nangadef"},
@@ -632,9 +632,10 @@ const UI = {
     backToTheme: "← Retour au thème",
     streakDay: " jour de suite",
     streakDays: " jours de suite",
-    buyModalTitle: "Contenu réservé",
-    buyModalText: (label) => `« ${label} » fait partie de la version complète de Wolof Express, réservée aux acheteurs du livre. Active ton code pour tout débloquer.`,
-    buyModalBtn: "Activer mon code →",
+    buyModalTitle: "Débloquez la version complète",
+    buyModalText: (label) => `« ${label} » fait partie de la version complète : taxi, marché, repas et tous les autres thèmes. Tout débloquer : 5 900 FCFA (≈ 9 €), accès illimité.`,
+    buyModalBtn: "Tout débloquer →",
+    buyModalHaveCode: "J'ai déjà un code",
   },
   en: {
     splashsub: "Everyday words for Dakar",
@@ -696,13 +697,14 @@ const UI = {
     backToTheme: "← Back to theme",
     streakDay: " day in a row",
     streakDays: " days in a row",
-    buyModalTitle: "Premium content",
-    buyModalText: (label) => `"${label}" is part of the full Wolof Express experience, reserved for book buyers. Activate your code to unlock everything.`,
-    buyModalBtn: "Activate my code →",
+    buyModalTitle: "Unlock the full version",
+    buyModalText: (label) => `"${label}" is part of the full version: taxi, market, meals and every other theme. Unlock everything: 5,900 FCFA (≈ €9), unlimited access.`,
+    buyModalBtn: "Unlock everything →",
+    buyModalHaveCode: "I already have a code",
   }
 };
 // ── ACCÈS COMPLET (démo gratuite Saluer + Se présenter, reste réservé aux acheteurs) ──
-const DEMO_THEME_LIMIT = 2; // nombre de thèmes en accès libre sans code
+const DEMO_THEME_LIMIT = 1; // nombre de thèmes en accès libre sans code (essai : le thème Saluer)
 const urlParams = new URLSearchParams(window.location.search);
 // Le code et l'e-mail arrivent uniquement au moment de l'activation (redirection
 // depuis wolof-express.html après vérification du code) — on les garde en local
@@ -1108,7 +1110,8 @@ function showBuyModal(t){
       <div class="lock-modal-icon">${ICO.lock}</div>
       <div class="lock-modal-title">${U('buyModalTitle')}</div>
       <div class="lock-modal-text">${U('buyModalText')(TL(t))}</div>
-      <a href="https://leerukocc.com/wolof-express.html#activer" class="lock-modal-btn" style="display:inline-block;text-decoration:none;">${U('buyModalBtn')}</a>
+      <a href="https://leerukocc.com/wolof-express.html#acheter" class="lock-modal-btn" style="display:inline-block;text-decoration:none;">${U('buyModalBtn')}</a>
+      <a href="https://leerukocc.com/wolof-express.html#activer" style="display:block;margin-top:0.7rem;font-size:0.8rem;color:#8B3A12;text-decoration:underline;">${U('buyModalHaveCode')}</a>
       <div class="lock-modal-btn" style="background:transparent;color:inherit;box-shadow:none;margin-top:0.3rem;">${U('lockmodalbtn')}</div>
     </div>`;
   app.appendChild(fx);
